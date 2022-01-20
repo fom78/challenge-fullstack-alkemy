@@ -6,6 +6,7 @@
   --dark: #1f1f1f;
   --bg-primary: #375A7F;
   --text-primary: #fff;
+  --text-secondary: #0f0f0f;
 }
 
 body {
@@ -20,7 +21,7 @@ body {
   text-rendering: optimizeSpeed;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  color: var(--text-primary);
+  color: var(--text-se);
   background-color: var(--white-color);
 }
 
