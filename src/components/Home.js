@@ -2,15 +2,15 @@ import styled from 'styled-components'
 // Components
 import List from "./List";
 
-import { getBalance } from 'data';
+import { getBalance, getOperations } from 'data';
 
-export default function Home() {
+export default function Home({operations}) {
     const balance = getBalance()
-
+    const lastOperations = getOperations({quantity:3})
     return (
       <HomeStyled>
         <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
-        <List quantity={3} title='Last operations'/>
+        <List operations={lastOperations} title='Last operations'/>
       </HomeStyled>
     );
   }

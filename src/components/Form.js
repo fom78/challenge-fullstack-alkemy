@@ -37,7 +37,7 @@ const Form = ({setRefreshList}) => {
             setError(false);
             addOperations(operation)
             
-            // setRefreshList(true);
+            setRefreshList(true);
 
             // Redirect
 

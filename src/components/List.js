@@ -1,26 +1,10 @@
-import  {useEffect, useState} from 'react';
 import { Outlet } from "react-router-dom";
 // Styles
 import styled from 'styled-components'
 
-import { getOperations } from 'data';
 
-const List = ({ quantity = 'all', title = 'List of operations' }) => {
-  const [operations, setOperations] = useState([]);
-  const [refreshList, setRefreshList] = useState(true);
-
-  useEffect(() => {
-    if (refreshList){
-      const consultAPI = () => {
-        setRefreshList(false)
-        const operations = getOperations({ quantity })
-        setOperations(operations)
-      }
-  
-      consultAPI();
-    }
-  }, [refreshList, quantity]);
-  
+const List = ({ operations, title = 'List of operations' }) => {
+    
   return (
     <>
       <Outlet />
@@ -30,7 +14,8 @@ const List = ({ quantity = 'all', title = 'List of operations' }) => {
           <div className='operationHeader'>
             <div>{operation.date}</div>
             <div>{operation.type}</div>
-            <div>Edit-Delete</div>
+            <div>
+              <button>Edit</button><button>Delete</button></div>
           </div>
           <p className='operationConcept'>{operation.concept}</p>
           <div className='operationAmount'>Amount: <span>$ {operation.amount}</span></div>
