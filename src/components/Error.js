@@ -1,8 +1,8 @@
 
-const Error = () => {
+const Error = ({message=`There's nothing here!`}) => {
     return (
         <main style={{ padding: "1rem" }}>
-          <p>There's nothing here!</p>
+          <p>{message}</p>
         </main>
     )
 }

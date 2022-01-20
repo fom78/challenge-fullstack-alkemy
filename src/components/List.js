@@ -1,29 +1,47 @@
+import  {useEffect, useState} from 'react';
+import { Outlet } from "react-router-dom";
+// Styles
 import styled from 'styled-components'
 
 import { getOperations } from 'data';
 
-const List = ({quantity='all', title = 'List of operations'}) => {
-  
-    const operations = getOperations({quantity})
-    return (
-        <>
-            <h2>{title}</h2>
-            <ListStyled>
-                
-                {operations.map(operation => <Operation key={operation.id}>
-                    <div className='operationHeader'>
-                      <div>{operation.date}</div>
-                      <div>{operation.type}</div>
-                      <div>Edit-Delete</div>
-                    </div>
-                    <p className='operationConcept'>{operation.concept}</p>
-                    <div className='operationAmount'>Amount: <span>$ {operation.amount}</span></div>
-                </Operation>)
+const List = ({ quantity = 'all', title = 'List of operations' }) => {
+  const [operations, setOperations] = useState([]);
+  const [refreshList, setRefreshList] = useState(true);
 
-                }
-            </ListStyled>
-        </>
-    )
+  useEffect(() => {
+    if (refreshList){
+      const consultAPI = () => {
+        setRefreshList(false)
+        const operations = getOperations({ quantity })
+        setOperations(operations)
+      }
+  
+      consultAPI();
+    }
+  }, [refreshList, quantity]);
+  
+  return (
+    <>
+      <Outlet />
+      <h2>{title}</h2>
+      <ListStyled>
+        {operations && operations.map(operation => <Operation key={operation.id}>
+          <div className='operationHeader'>
+            <div>{operation.date}</div>
+            <div>{operation.type}</div>
+            <div>Edit-Delete</div>
+          </div>
+          <p className='operationConcept'>{operation.concept}</p>
+          <div className='operationAmount'>Amount: <span>$ {operation.amount}</span></div>
+        </Operation>)
+
+        }
+
+
+      </ListStyled>
+    </>
+  )
 }
 
 export default List;

@@ -78,8 +78,13 @@ const operations = [
     }
 ]
 
+export const addOperations = (operation) => {
+    operations.push({...operation, id: operations.length+1})
+    console.log(operations);
+    return operations
+}
+
 export const getOperations = ({quantity=10}) => {
-    console.log(quantity);
     if (quantity === 'all') return operations
     return operations.slice(0,quantity)
 }

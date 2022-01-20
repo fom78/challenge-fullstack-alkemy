@@ -7,7 +7,8 @@ function App() {
     <Container>
       <NavBar>
         <Link to="/home">Home</Link> |{" "}
-        <Link to="/list">list</Link>
+        <Link to="/list">list</Link> |{" "}
+        <Link to="/list/add">Add</Link>
       </NavBar>
       <Main>
         <h1>Personal Finance</h1>
