@@ -1,7 +1,4 @@
 import { Outlet, Link } from "react-router-dom";
-// Components
-import Form from "components/Form";
-import List from "components/List";
 // Styles
 import styled from 'styled-components'
 
