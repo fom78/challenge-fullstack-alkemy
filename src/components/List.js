@@ -1,14 +1,12 @@
 import styled from 'styled-components'
 
-import { getBalance, getOperations } from 'data';
+import { getOperations } from 'data';
 
-const List = ({quantity=5, title = 'List of operations'}) => {
-  const balance = getBalance()
-  console.log(balance);
+const List = ({quantity='all', title = 'List of operations'}) => {
+  
     const operations = getOperations({quantity})
     return (
         <>
-            <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
             <h2>{title}</h2>
             <ListStyled>
                 
@@ -31,11 +29,8 @@ const List = ({quantity=5, title = 'List of operations'}) => {
 export default List;
 
 export const ListStyled = styled.div`
-  margin-bottom: 0.5rem;
+  padding-bottom: 1.5rem;
   background-color: var(--white);
-
-
-${(props) => props.showFull && 'height: 200px;'}
 `
 
 const Operation = styled.div`
