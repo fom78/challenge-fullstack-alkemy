@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = `http://localhost:4000/operations`
+const API_URL = `http://localhost:4000/operations/`
 
 class FinanceService {
   create (data) {
