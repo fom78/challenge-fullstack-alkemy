@@ -6,11 +6,11 @@ import { getBalance, getOperations } from 'data';
 
 export default function Home({operations}) {
     const balance = getBalance()
-    const lastOperations = getOperations({quantity:3})
+    const lastOperations = getOperations({op:operations,quantity:3})
     return (
       <HomeStyled>
         <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
-        <List operations={lastOperations} title='Last operations'/>
+        <List operations={lastOperations} title='Last operations' actions={false}/>
       </HomeStyled>
     );
   }

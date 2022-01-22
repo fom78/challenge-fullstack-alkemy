@@ -84,7 +84,7 @@ export const addOperations = (operation) => {
     return operations
 }
 
-export const getOperations = ({quantity=10}) => {
+export const getOperations = ({op,quantity=10}) => {
     if (quantity === 'all') return operations
     return operations.slice(0,quantity)
 }

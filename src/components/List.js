@@ -9,9 +9,9 @@ import FinanceService from "services/finance.service";
 import styled from 'styled-components'
 
 
-const List = ({ operations, setRefreshList, title = 'List of operations' }) => {
+const List = ({ operations, setRefreshList, title = 'List of operations', actions = true }) => {
   let navigate = useNavigate();
-  
+
   const handleEdit = (id) => {
     navigate(`/list/edit/${id}`)
   }
@@ -39,10 +39,14 @@ const List = ({ operations, setRefreshList, title = 'List of operations' }) => {
             <div className='operationHeader'>
               <div className='date'>{formatedDate}</div>
               <div className={`type ${color}`}>{operation.type}</div>
-              <div className="btn-action">
-                <button onClick={() => handleEdit(operation.id)}><Edit /></button>
-                <button><Delete onClick={() => handleDelete(operation.id)} /></button>
-              </div>
+              {actions
+                ?
+                <div className="btn-action">
+                  <button onClick={() => handleEdit(operation.id)}><Edit /></button>
+                  <button><Delete onClick={() => handleDelete(operation.id)} /></button>
+                </div>
+                : null
+              }
             </div>
             <p className='operationConcept'>{operation.concept}</p>
             <div className='operationAmount'>Amount: <span>$ {operation.amount}</span></div>
