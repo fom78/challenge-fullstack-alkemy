@@ -2,6 +2,10 @@
   "name": "personal-finance",
   "version": "0.1.0",
   "author": "fom78, Fernando Masino",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fom78/challenge-fullstack-alkemy"
+    },
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "5.16.1",
