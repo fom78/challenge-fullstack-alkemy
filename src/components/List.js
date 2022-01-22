@@ -1,33 +1,53 @@
 import { Outlet } from "react-router-dom";
+import { useNavigate } from 'react-router-dom'
+// Components
+import Edit from "./icons/Edit";
+import Delete from "./icons/Delete";
+// Services
+import FinanceService from "services/finance.service";
 // Styles
 import styled from 'styled-components'
 
 
-const List = ({ operations, title = 'List of operations' }) => {
-    
+const List = ({ operations, setRefreshList, title = 'List of operations' }) => {
+  let navigate = useNavigate();
+  
+  const handleEdit = (id) => {
+    navigate(`/list/edit/${id}`)
+  }
+  const handleDelete = (id) => {
+    FinanceService.delete(id)
+      .then((response) => {
+        setRefreshList(true);
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
+
   return (
     <>
       <Outlet />
       <h2>{title}</h2>
       <ListStyled>
-        {operations && operations.map(operation => 
-          {
-            // Convert date to short date, format: d/mm/yy
-            const date = new Date(operation.date)
-            const formatedDate = new Intl.DateTimeFormat('es-AR', { year: '2-digit', month: '2-digit', day: 'numeric' }).format(date)
-            const color = (operation.type==='income')?'green':'red'
-            console.log(color);
-            return <Operation key={operation.id}>
-              <div className='operationHeader'>
-                <div className='date'>{formatedDate}</div>
-                <div className={`type ${color}`}>{operation.type}</div>
-                {console.log(operation.type)}
-                <div>
-                  <button>Edit</button><button>Delete</button></div>
+        {operations && operations.map(operation => {
+          // Convert date to short date, format: d/mm/yy
+          const date = new Date(operation.date)
+          const formatedDate = new Intl.DateTimeFormat('es-AR', { year: '2-digit', month: '2-digit', day: 'numeric' }).format(date)
+          const color = (operation.type === 'income') ? 'green' : 'red'
+          return <Operation key={operation.id}>
+            <div className='operationHeader'>
+              <div className='date'>{formatedDate}</div>
+              <div className={`type ${color}`}>{operation.type}</div>
+              <div className="btn-action">
+                <button onClick={() => handleEdit(operation.id)}><Edit /></button>
+                <button><Delete onClick={() => handleDelete(operation.id)} /></button>
               </div>
-              <p className='operationConcept'>{operation.concept}</p>
-              <div className='operationAmount'>Amount: <span>$ {operation.amount}</span></div>
-            </Operation>})
+            </div>
+            <p className='operationConcept'>{operation.concept}</p>
+            <div className='operationAmount'>Amount: <span>$ {operation.amount}</span></div>
+          </Operation>
+        })
 
         }
 
@@ -51,11 +71,9 @@ const Operation = styled.div`
   max-width: 100%;
   margin-bottom: 1rem;
   padding: 0.3rem;
-  /* align-items: center; */
   background-color: var(--bg-primary);
   color: var(--text-primary);
   font-size: .8rem;
-  border: 4px solid var(--green);
   
   & .operationHeader {
     width: 100%;
@@ -65,9 +83,6 @@ const Operation = styled.div`
     justify-content: space-between;
 
     & .type {
-      /* background-color: red; */
-      /* color: red; */
-      /* border: 2px solid red; */
       text-transform: uppercase;
       margin:auto;
       padding: 4px;
@@ -89,5 +104,15 @@ const Operation = styled.div`
   }
   }
 
-  
+  & .btn-action > button {
+    margin-right: .5rem;
+    background-color: transparent;
+    border: 1px solid transparent;
+    cursor: pointer;
+    color: var(--white);
+    
+    &:hover {
+      border: 1px solid var(--white);
+    }    
+  } 
 `

@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom'
 // Components
 import Error from './Error';
 // Service
@@ -7,7 +7,7 @@ import FinanceService from 'services/finance.service';
 // Styles
 import styled from 'styled-components';
 
-const Form = ({ setRefreshList }) => {
+const Form = ({ setRefreshList, edit = false }) => {
     // Create state as an object
     const [operation, setOperation] = useState({
         concept: '',
@@ -15,6 +15,24 @@ const Form = ({ setRefreshList }) => {
         date: '',
         type: ''
     })
+    const params = useParams();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (edit && params) {
+            FinanceService.get(params.id)
+                .then((response) => {
+                    const operationFounded = response.data
+                    // Convert to date correct for input.
+                    const date = new Date(operationFounded[0].date).toISOString().slice(0, 10)
+
+                    setOperation({ ...operationFounded[0], date: date })
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+        }
+    }, [params])
 
     // Verify error
     const [error, setError] = useState(false);
@@ -30,12 +48,13 @@ const Form = ({ setRefreshList }) => {
     // Send req to API
     const createOperation = e => {
         e.preventDefault();
-        if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '') {
-            setError(true);
-            return;
-        } else {
+        if (edit) {
+            if (operation.concept === '' || operation.amount === '' || operation.date === '') {
+                setError(true);
+                return;
+            }
             setError(false);
-            FinanceService.create(operation)
+            FinanceService.update(params.id, operation)
                 .then((response) => {
                     setRefreshList(true);
                 })
@@ -44,14 +63,31 @@ const Form = ({ setRefreshList }) => {
                 })
 
             // Redirect
+            navigate('/list')
+        }
+        if (!edit) {
+            if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '') {
+                setError(true);
+                return;
+            } else {
+                setError(false);
+                FinanceService.create(operation)
+                    .then((response) => {
+                        setRefreshList(true);
+                    })
+                    .catch((e) => {
+                        console.log(e)
+                    })
 
+                // Redirect
+                navigate('/list')
+            }
         }
     }
 
-    let navigate = useNavigate();
-    function cancelButton () {
+    function cancelButton() {
         navigate('/list')
-      }
+    }
 
     return (
         <Container>
@@ -61,7 +97,11 @@ const Form = ({ setRefreshList }) => {
                     <Row>
                         <div>
                             <label htmlFor="concept-form">Concept</label>
-                            <input type="text" placeholder="Shopping" id="concept-form"
+                            <input
+                                type="text"
+                                placeholder="Shopping"
+                                id="concept-form"
+                                value={operation ? operation.concept : ''}
                                 onChange={handleChange}
                                 name="concept"
                             />
@@ -70,7 +110,10 @@ const Form = ({ setRefreshList }) => {
                     <Row>
                         <div>
                             <label htmlFor="date-form">Date</label>
-                            <input type="date" id="date-form"
+                            <input
+                                type="date"
+                                id="date-form"
+                                value={operation ? operation.date : ''}
                                 onChange={handleChange}
                                 name="date"
                             />
@@ -78,24 +121,30 @@ const Form = ({ setRefreshList }) => {
 
                     </Row>
                     <Row>
-                        <div>
-                            <label htmlFor="type-form">Type</label>
-                            <select id="type-form" onChange={handleChange} name="type">
-                                <option value="">- Select an option -</option>
-                                <option value="income">Income</option>
-                                <option value="expenditure">Expenditure</option>
-                            </select>
-                        </div>
+                        {!edit &&
+                            <div>
+                                <label htmlFor="type-form">Type</label>
+                                <select id="type-form" onChange={handleChange} name="type">
+                                    <option value="">- Select an option -</option>
+                                    <option value="income">Income</option>
+                                    <option value="expenditure">Expenditure</option>
+                                </select>
+                            </div>
+                        }
                         <div>
                             <label htmlFor="amount-form">Amount</label>
-                            <input type="number" placeholder="500" id="amount-form"
+                            <input
+                                type="number"
+                                placeholder="500"
+                                id="amount-form"
+                                value={operation ? operation.amount : ''}
                                 onChange={handleChange}
                                 name="amount"
                             />
                         </div>
                     </Row>
-                    <Button type="submit" value="Add" green/>
-                    <Button type="submit" value="Cancel" onClick={cancelButton} red/>
+                    <Button type="submit" value={edit ? 'Edit' : 'Add'} green />
+                    <Button type="submit" value="Cancel" onClick={cancelButton} red />
 
                 </form>
                 {error ? <Error message="All fields are required" /> : null}

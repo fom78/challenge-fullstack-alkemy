@@ -37,8 +37,9 @@ function App() {
         <Route path="/" element={<Layout />} >
           <Route path="/" element={<Home operations={operations}/>} /> 
           <Route path="home" element={<Home operations={operations}/>} />
-          <Route path="list" element={<List operations={operations}/>} >
+          <Route path="list" element={<List operations={operations} setRefreshList={setRefreshList}/>} >
             <Route path="add" element={<Form setRefreshList={setRefreshList} />} />
+            <Route path="edit/:id" element={<Form setRefreshList={setRefreshList} edit={true} />} />
           </Route>
           <Route path="*" element={<Error />} />
         </Route>
