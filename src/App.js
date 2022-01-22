@@ -1,5 +1,4 @@
 import  {useEffect, useState} from 'react';
-
 import { 
   BrowserRouter,
   Routes,
@@ -11,8 +10,8 @@ import Form from 'components/Form';
 import Home from 'components/Home';
 import Layout from "components/Layout";
 import List from 'components/List';
-
-import { getOperations } from 'data';
+// Service
+import FinanceService from 'services/finance.service';
 
 function App() {
   const [operations, setOperations] = useState([]);
@@ -20,19 +19,23 @@ function App() {
 
   useEffect(() => {
     if (refreshList){
-      const consultAPI = () => {
         setRefreshList(false)
-        const operations = getOperations({quantity:'all'})
-        setOperations(operations)
-      }
-  
-      consultAPI();
+        FinanceService.getAll()
+          .then((response) => {
+            const operationsFounded = response.data
+            setOperations(operationsFounded)
+          })
+          .catch((e) => {
+            console.log(e)
+          })
     }
   }, [refreshList]);
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />} >
+          <Route path="/" element={<Home operations={operations}/>} /> 
           <Route path="home" element={<Home operations={operations}/>} />
           <Route path="list" element={<List operations={operations}/>} >
             <Route path="add" element={<Form setRefreshList={setRefreshList} />} />

@@ -1,12 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
 // Components
 import Error from './Error';
+// Service
+import FinanceService from 'services/finance.service';
 // Styles
 import styled from 'styled-components';
 
-import { addOperations } from 'data';
-
-const Form = ({setRefreshList}) => {
+const Form = ({ setRefreshList }) => {
     // Create state as an object
     const [operation, setOperation] = useState({
         concept: '',
@@ -29,20 +30,28 @@ const Form = ({setRefreshList}) => {
     // Send req to API
     const createOperation = e => {
         e.preventDefault();
-        console.log('crear operacion');
         if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '') {
             setError(true);
             return;
         } else {
             setError(false);
-            addOperations(operation)
-            
-            setRefreshList(true);
+            FinanceService.create(operation)
+                .then((response) => {
+                    setRefreshList(true);
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
 
             // Redirect
 
         }
     }
+
+    let navigate = useNavigate();
+    function cancelButton () {
+        navigate('/list')
+      }
 
     return (
         <Container>
@@ -85,7 +94,9 @@ const Form = ({setRefreshList}) => {
                             />
                         </div>
                     </Row>
-                    <Button type="submit" value="Add" />
+                    <Button type="submit" value="Add" green/>
+                    <Button type="submit" value="Cancel" onClick={cancelButton} red/>
+
                 </form>
                 {error ? <Error message="All fields are required" /> : null}
             </div>
@@ -155,8 +166,12 @@ const Button = styled.input`
     border-radius: 4px;
     border: 1px solid #bbb;
     cursor: pointer;
+    margin-bottom: 0.5rem;
     box-sizing: border-box;
     color: #FFF;
     background-color: #33C3F0;
     border-color: #33C3F0;
+    ${(props) => props.red && 'border-color: var(--red); background-color: var(--red);'}
+    ${(props) => props.green && 'border-color: var(--green); background-color: var(--green);'}
+    
 `
