@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 // Components
 import Error from './Error'
+// Notify
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 // Service
 import FinanceService from 'services/finance.service'
 // Styles
@@ -61,7 +64,16 @@ const Form = ({ setRefreshList, edit = false }) => {
         .catch((e) => {
           console.log(e)
         })
-
+      // Notify user
+      toast.info('Operation edited', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
       // Redirect
       navigate('/list')
     }
@@ -77,7 +89,16 @@ const Form = ({ setRefreshList, edit = false }) => {
           .catch((e) => {
             console.log(e)
           })
-
+        // Notify user
+        toast.success('Operation added', {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
         // Redirect
         navigate('/list')
       }

@@ -1,11 +1,24 @@
 
 import { Outlet, Link } from 'react-router-dom'
+// Notify
+import { ToastContainer } from 'react-toastify'
 // Styles
 import styled from 'styled-components'
 
 export default function Layout () {
   return (
     <Container>
+      <ToastContainer
+        position='top-center'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <NavBar>
         <Link to='/home'>Home</Link> |{' '}
         <Link to='/list'>list</Link> |{' '}

@@ -1,8 +1,9 @@
 import { Outlet, useNavigate } from 'react-router-dom'
-
 // Components
 import Edit from './icons/Edit'
 import Delete from './icons/Delete'
+// Notify
+import { toast } from 'react-toastify'
 // Services
 import FinanceService from 'services/finance.service'
 // Styles
@@ -18,6 +19,15 @@ const List = ({ operations, setRefreshList, title = 'List of operations', action
     FinanceService.delete(id)
       .then((response) => {
         setRefreshList(true)
+        toast.success(`Operation id: ${id} deleted`, {
+          position: 'top-center',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined
+        })
       })
       .catch((e) => {
         console.log(e)
