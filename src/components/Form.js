@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-// Components
-import Error from './Error'
 // Notify
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -10,7 +8,7 @@ import FinanceService from 'services/finance.service'
 // Styles
 import styled from 'styled-components'
 
-const Form = ({ setRefreshList, edit = false }) => {
+const Form = ({ setRefreshList, edit = false, deletes = false }) => {
   // Create state as an object
   const [operation, setOperation] = useState({
     concept: '',
@@ -49,8 +47,30 @@ const Form = ({ setRefreshList, edit = false }) => {
   }
 
   // Send req to API
-  const createOperation = e => {
+  const actionOperation = e => {
     e.preventDefault()
+    if (deletes) {
+      setError(false)
+      FinanceService.delete(params.id)
+        .then((response) => {
+          setRefreshList(true)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+      // Notify user
+      toast.info('Operation dellll', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+      // Redirect
+      navigate('/list')
+    }
     if (edit) {
       if (operation.concept === '' || operation.amount === '' || operation.date === '') {
         setError(true)
@@ -109,11 +129,25 @@ const Form = ({ setRefreshList, edit = false }) => {
     navigate('/list')
   }
 
+  useEffect(() => {
+    if (error) {
+      toast.error('Complete all require inputs', {
+        position: 'top-center',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      })
+    }
+  }, [error])
+
   return (
     <Container>
       <div>
         <h4>Enter new operation</h4>
-        <form onSubmit={createOperation}>
+        <form onSubmit={actionOperation}>
           <Row>
             <div>
               <label htmlFor='concept-form'>Concept</label>
@@ -166,7 +200,6 @@ const Form = ({ setRefreshList, edit = false }) => {
           <Button type='submit' value='Cancel' onClick={cancelButton} red />
 
         </form>
-        {error ? <Error message='All fields are required' /> : null}
       </div>
     </Container>
   )

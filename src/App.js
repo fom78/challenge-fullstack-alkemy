@@ -40,6 +40,7 @@ function App () {
           <Route path='list' element={<List operations={operations} setRefreshList={setRefreshList} />}>
             <Route path='add' element={<Form setRefreshList={setRefreshList} />} />
             <Route path='edit/:id' element={<Form setRefreshList={setRefreshList} edit />} />
+            <Route path='delete/:id' element={<Form setRefreshList={setRefreshList} deletes />} />
           </Route>
           <Route path='*' element={<Error />} />
         </Route>

@@ -16,6 +16,9 @@ const List = ({ operations, setRefreshList, title = 'List of operations', action
     navigate(`/list/edit/${id}`)
   }
   const handleDelete = (id) => {
+    navigate(`/list/delete/${id}`)
+  }
+  const handleDelete1 = (id) => {
     FinanceService.delete(id)
       .then((response) => {
         setRefreshList(true)
@@ -53,6 +56,7 @@ const List = ({ operations, setRefreshList, title = 'List of operations', action
                   ? (
                     <div className='btn-action'>
                       <button onClick={() => handleEdit(operation.id)}><Edit /></button>
+                      <button><Delete onClick={() => handleDelete1(operation.id)} /></button>
                       <button><Delete onClick={() => handleDelete(operation.id)} /></button>
                     </div>)
                   : null}
