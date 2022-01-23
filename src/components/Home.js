@@ -1,12 +1,10 @@
+import { useMemo } from 'react'
 import styled from 'styled-components'
 // Components
 import List from './List'
 
-import { getOperations } from 'data'
-import { useMemo } from 'react'
-
-export default function Home ({ operations }) {
-  const lastOperations = getOperations({ op: operations, quantity: 3 })
+export default function Home ({ operations, quantity = 10 }) {
+  const lastOperations = operations.slice(0, quantity)
 
   const balance = useMemo(() => operations.reduce((previousValue, currentValue) => {
     if (currentValue.type === 'expenditure') return previousValue - currentValue.amount
