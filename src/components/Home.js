@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import List from './List'
 
 export default function Home ({ operations, quantity = 10 }) {
-  const lastOperations = operations.slice(0, quantity)
+  const lastOperations = operations.sort((a, b) => b.id - a.id).slice(0, quantity)
 
   const balance = useMemo(() => operations.reduce((previousValue, currentValue) => {
     if (currentValue.type === 'expenditure') return previousValue - currentValue.amount
@@ -14,7 +14,7 @@ export default function Home ({ operations, quantity = 10 }) {
   return (
     <HomeStyled>
       <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
-      <List operations={lastOperations} title='Last operations' actions={false} />
+      <List operations={lastOperations} title='Last operations added' />
     </HomeStyled>
   )
 }
