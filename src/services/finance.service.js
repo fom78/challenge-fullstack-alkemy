@@ -2,7 +2,7 @@ import axios from 'axios'
 
 // const API_URL = `http://localhost:4000/operations/`
 
-const API_URL = `https://personal-finance-alkemy.herokuapp.com/operations/`
+const API_URL = 'https://personal-finance-alkemy.herokuapp.com/operations/'
 
 class FinanceService {
   create (data) {
@@ -24,7 +24,6 @@ class FinanceService {
   getAll () {
     return axios.get(API_URL)
   }
-
 }
 
 export default new FinanceService()

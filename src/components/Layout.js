@@ -1,26 +1,25 @@
 
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link } from 'react-router-dom'
 // Styles
 import styled from 'styled-components'
 
-export default function Layout() {
+export default function Layout () {
+  return (
+    <Container>
+      <NavBar>
+        <Link to='/home'>Home</Link> |{' '}
+        <Link to='/list'>list</Link> |{' '}
+        <Link to='/list/add'>Add</Link>
+      </NavBar>
+      <Main>
+        <h1>Personal Finance</h1>
+        <p>App to keep your numbers up to date</p>
+        <Outlet />
+      </Main>
 
-    return (
-        <Container>
-            <NavBar>
-                <Link to="/home">Home</Link> |{" "}
-                <Link to="/list">list</Link> |{" "}
-                <Link to="/list/add">Add</Link>
-            </NavBar>
-            <Main>
-                <h1>Personal Finance</h1>
-                <p>App to keep your numbers up to date</p>
-                <Outlet />
-            </Main>
-
-            <StyledFooter>Footer</StyledFooter>
-        </Container>
-    )
+      <StyledFooter>Footer</StyledFooter>
+    </Container>
+  )
 }
 
 export const Container = styled.div`

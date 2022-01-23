@@ -1,16 +1,15 @@
-import { Outlet } from "react-router-dom";
-import { useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
+
 // Components
-import Edit from "./icons/Edit";
-import Delete from "./icons/Delete";
+import Edit from './icons/Edit'
+import Delete from './icons/Delete'
 // Services
-import FinanceService from "services/finance.service";
+import FinanceService from 'services/finance.service'
 // Styles
 import styled from 'styled-components'
 
-
 const List = ({ operations, setRefreshList, title = 'List of operations', actions = true }) => {
-  let navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleEdit = (id) => {
     navigate(`/list/edit/${id}`)
@@ -18,7 +17,7 @@ const List = ({ operations, setRefreshList, title = 'List of operations', action
   const handleDelete = (id) => {
     FinanceService.delete(id)
       .then((response) => {
-        setRefreshList(true);
+        setRefreshList(true)
       })
       .catch((e) => {
         console.log(e)
@@ -35,33 +34,31 @@ const List = ({ operations, setRefreshList, title = 'List of operations', action
           const date = new Date(operation.date)
           const formatedDate = new Intl.DateTimeFormat('es-AR', { year: '2-digit', month: '2-digit', day: 'numeric' }).format(date)
           const color = (operation.type === 'income') ? 'green' : 'red'
-          return <Operation key={operation.id}>
-            <div className='operationHeader'>
-              <div className='date'>{formatedDate}</div>
-              <div className={`type ${color}`}>{operation.type}</div>
-              {actions
-                ?
-                <div className="btn-action">
-                  <button onClick={() => handleEdit(operation.id)}><Edit /></button>
-                  <button><Delete onClick={() => handleDelete(operation.id)} /></button>
-                </div>
-                : null
-              }
-            </div>
-            <p className='operationConcept'>{operation.concept}</p>
-            <div className='operationAmount'>Amount: <span>$ {operation.amount}</span></div>
-          </Operation>
-        })
-
-        }
-
+          return (
+            <Operation key={operation.id}>
+              <div className='operationHeader'>
+                <div className='date'>{formatedDate}</div>
+                <div className={`type ${color}`}>{operation.type}</div>
+                {actions
+                  ? (
+                    <div className='btn-action'>
+                      <button onClick={() => handleEdit(operation.id)}><Edit /></button>
+                      <button><Delete onClick={() => handleDelete(operation.id)} /></button>
+                    </div>)
+                  : null}
+              </div>
+              <p className='operationConcept'>{operation.concept}</p>
+              <div className='operationAmount'>Amount: <span>$ {operation.amount}</span></div>
+            </Operation>
+          )
+        })}
 
       </ListStyled>
     </>
   )
 }
 
-export default List;
+export default List
 
 export const ListStyled = styled.div`
   padding-bottom: 1.5rem;

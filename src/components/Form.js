@@ -1,159 +1,157 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 // Components
-import Error from './Error';
+import Error from './Error'
 // Service
-import FinanceService from 'services/finance.service';
+import FinanceService from 'services/finance.service'
 // Styles
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 const Form = ({ setRefreshList, edit = false }) => {
-    // Create state as an object
-    const [operation, setOperation] = useState({
-        concept: '',
-        amount: '',
-        date: '',
-        type: ''
-    })
-    const params = useParams();
-    const navigate = useNavigate();
+  // Create state as an object
+  const [operation, setOperation] = useState({
+    concept: '',
+    amount: '',
+    date: '',
+    type: ''
+  })
+  const params = useParams()
+  const navigate = useNavigate()
 
-    useEffect(() => {
-        if (edit && params) {
-            FinanceService.get(params.id)
-                .then((response) => {
-                    const operationFounded = response.data
-                    // Convert to date correct for input.
-                    const date = new Date(operationFounded[0].date).toISOString().slice(0, 10)
+  useEffect(() => {
+    if (edit && params) {
+      FinanceService.get(params.id)
+        .then((response) => {
+          const operationFounded = response.data
+          // Convert to date correct for input.
+          const date = new Date(operationFounded[0].date).toISOString().slice(0, 10)
 
-                    setOperation({ ...operationFounded[0], date: date })
-                })
-                .catch((e) => {
-                    console.log(e)
-                })
-        }
-    }, [params])
-
-    // Verify error
-    const [error, setError] = useState(false);
-
-    // Form Read
-    const handleChange = e => {
-        setOperation({
-            ...operation,
-            [e.target.name]: e.target.value
+          setOperation({ ...operationFounded[0], date: date })
+        })
+        .catch((e) => {
+          console.log(e)
         })
     }
+  }, [params])
 
-    // Send req to API
-    const createOperation = e => {
-        e.preventDefault();
-        if (edit) {
-            if (operation.concept === '' || operation.amount === '' || operation.date === '') {
-                setError(true);
-                return;
-            }
-            setError(false);
-            FinanceService.update(params.id, operation)
-                .then((response) => {
-                    setRefreshList(true);
-                })
-                .catch((e) => {
-                    console.log(e)
-                })
+  // Verify error
+  const [error, setError] = useState(false)
 
-            // Redirect
-            navigate('/list')
-        }
-        if (!edit) {
-            if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '') {
-                setError(true);
-                return;
-            } else {
-                setError(false);
-                FinanceService.create(operation)
-                    .then((response) => {
-                        setRefreshList(true);
-                    })
-                    .catch((e) => {
-                        console.log(e)
-                    })
+  // Form Read
+  const handleChange = e => {
+    setOperation({
+      ...operation,
+      [e.target.name]: e.target.value
+    })
+  }
 
-                // Redirect
-                navigate('/list')
-            }
-        }
+  // Send req to API
+  const createOperation = e => {
+    e.preventDefault()
+    if (edit) {
+      if (operation.concept === '' || operation.amount === '' || operation.date === '') {
+        setError(true)
+        return
+      }
+      setError(false)
+      FinanceService.update(params.id, operation)
+        .then((response) => {
+          setRefreshList(true)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+
+      // Redirect
+      navigate('/list')
     }
+    if (!edit) {
+      if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '') {
+        setError(true)
+      } else {
+        setError(false)
+        FinanceService.create(operation)
+          .then((response) => {
+            setRefreshList(true)
+          })
+          .catch((e) => {
+            console.log(e)
+          })
 
-    function cancelButton() {
+        // Redirect
         navigate('/list')
+      }
     }
+  }
 
-    return (
-        <Container>
+  function cancelButton () {
+    navigate('/list')
+  }
+
+  return (
+    <Container>
+      <div>
+        <h4>Enter new operation</h4>
+        <form onSubmit={createOperation}>
+          <Row>
             <div>
-                <h4>Enter new operation</h4>
-                <form onSubmit={createOperation}>
-                    <Row>
-                        <div>
-                            <label htmlFor="concept-form">Concept</label>
-                            <input
-                                type="text"
-                                placeholder="Shopping"
-                                id="concept-form"
-                                value={operation ? operation.concept : ''}
-                                onChange={handleChange}
-                                name="concept"
-                            />
-                        </div>
-                    </Row>
-                    <Row>
-                        <div>
-                            <label htmlFor="date-form">Date</label>
-                            <input
-                                type="date"
-                                id="date-form"
-                                value={operation ? operation.date : ''}
-                                onChange={handleChange}
-                                name="date"
-                            />
-                        </div>
-
-                    </Row>
-                    <Row>
-                        {!edit &&
-                            <div>
-                                <label htmlFor="type-form">Type</label>
-                                <select id="type-form" onChange={handleChange} name="type">
-                                    <option value="">- Select an option -</option>
-                                    <option value="income">Income</option>
-                                    <option value="expenditure">Expenditure</option>
-                                </select>
-                            </div>
-                        }
-                        <div>
-                            <label htmlFor="amount-form">Amount</label>
-                            <input
-                                type="number"
-                                placeholder="500"
-                                id="amount-form"
-                                value={operation ? operation.amount : ''}
-                                onChange={handleChange}
-                                name="amount"
-                            />
-                        </div>
-                    </Row>
-                    <Button type="submit" value={edit ? 'Edit' : 'Add'} green />
-                    <Button type="submit" value="Cancel" onClick={cancelButton} red />
-
-                </form>
-                {error ? <Error message="All fields are required" /> : null}
+              <label htmlFor='concept-form'>Concept</label>
+              <input
+                type='text'
+                placeholder='Shopping'
+                id='concept-form'
+                value={operation ? operation.concept : ''}
+                onChange={handleChange}
+                name='concept'
+              />
             </div>
-        </Container>
-    )
+          </Row>
+          <Row>
+            <div>
+              <label htmlFor='date-form'>Date</label>
+              <input
+                type='date'
+                id='date-form'
+                value={operation ? operation.date : ''}
+                onChange={handleChange}
+                name='date'
+              />
+            </div>
+
+          </Row>
+          <Row>
+            {!edit &&
+              <div>
+                <label htmlFor='type-form'>Type</label>
+                <select id='type-form' onChange={handleChange} name='type'>
+                  <option value=''>- Select an option -</option>
+                  <option value='income'>Income</option>
+                  <option value='expenditure'>Expenditure</option>
+                </select>
+              </div>}
+            <div>
+              <label htmlFor='amount-form'>Amount</label>
+              <input
+                type='number'
+                placeholder='500'
+                id='amount-form'
+                value={operation ? operation.amount : ''}
+                onChange={handleChange}
+                name='amount'
+              />
+            </div>
+          </Row>
+          <Button type='submit' value={edit ? 'Edit' : 'Add'} green />
+          <Button type='submit' value='Cancel' onClick={cancelButton} red />
+
+        </form>
+        {error ? <Error message='All fields are required' /> : null}
+      </div>
+    </Container>
+  )
 }
 
-export default Form;
+export default Form
 
 const Container = styled.div`
     position: relative;

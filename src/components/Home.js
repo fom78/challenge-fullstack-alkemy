@@ -1,19 +1,19 @@
 import styled from 'styled-components'
 // Components
-import List from "./List";
+import List from './List'
 
-import { getBalance, getOperations } from 'data';
+import { getBalance, getOperations } from 'data'
 
-export default function Home({operations}) {
-    const balance = getBalance()
-    const lastOperations = getOperations({op:operations,quantity:3})
-    return (
-      <HomeStyled>
-        <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
-        <List operations={lastOperations} title='Last operations' actions={false}/>
-      </HomeStyled>
-    );
-  }
+export default function Home ({ operations }) {
+  const balance = getBalance()
+  const lastOperations = getOperations({ op: operations, quantity: 3 })
+  return (
+    <HomeStyled>
+      <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
+      <List operations={lastOperations} title='Last operations' actions={false} />
+    </HomeStyled>
+  )
+}
 
 const HomeStyled = styled.section`
   background-color: var(--white);
