@@ -1,3 +1,6 @@
+// Components
+import Operation from './Operation'
+// Styles
 import styled from 'styled-components'
 
 const ConfirmDeleteModal = ({
@@ -25,6 +28,7 @@ const ConfirmDeleteModal = ({
             </ModalHeader>
 
             <ModalBody>
+              <Operation operation={operation} bgTransparent />
               <DeleteButton onClick={() => handleDeleteClick(operation.id)}>Delete !</DeleteButton>
             </ModalBody>
 
@@ -74,6 +78,7 @@ const ModalHeader = styled.div`
   border-top-right-radius: .3rem;
   h5 {
     color: var(--white);
+    font-size: 1rem;
     text-align: center;
     text-transform: uppercase;
     margin: 0;
@@ -81,13 +86,14 @@ const ModalHeader = styled.div`
 `
 const ModalBody = styled.div`
   position: relative;
-  flex: 1 1 auto;
+  /* flex: 1 1 auto; */
   padding: .25rem .5rem;
-  min-height: 160px;
+  min-height: 190px;
   background: var(--bg-primary);
   box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, .2);
   overflow-y: auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
 `
 

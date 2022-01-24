@@ -1,10 +1,6 @@
 import { Outlet } from 'react-router-dom'
 // Components
 import Operation from './Operation'
-// Notify
-// import { toast } from 'react-toastify'
-// Services
-// import FinanceService from 'services/finance.service'
 // Styles
 import styled from 'styled-components'
 

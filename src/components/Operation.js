@@ -12,7 +12,7 @@ import FinanceService from 'services/finance.service'
 // Styles
 import styled from 'styled-components'
 
-const Operation = ({ operation, actions, setRefreshList }) => {
+const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }) => {
   const [stateModal, setStateModal] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const navigate = useNavigate()
@@ -86,9 +86,12 @@ const OperationStyled = styled.div`
   flex-direction: column;
   height: 120px;
   max-width: 100%;
+  width: 100%;
   margin-bottom: 1rem;
   padding: 0.3rem;
-  background-color: var(--bg-primary);
+  ${(props) => (props.bgTransparent) ? 'background-color: transparent;' : 'background-color: var(--bg-primary);'}
+  /* background-color: var(--bg-primary);
+  background-color: transparent; */
   color: var(--text-primary);
   font-size: .8rem;
   
