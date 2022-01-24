@@ -1,0 +1,31 @@
+{
+  "name": "back-challenge-fullstack-alkemy",
+  "author": "fom78, Fernando Masino",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/fom78/back-challenge-alkemy"
+    },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "babel src --out-dir build",
+    "dev": "nodemon src/index.js --exec babel-node",
+    "start": "node build/index.js"
+  },
+  "keywords": [],
+  "license": "ISC",
+  "dependencies": {
+    "cors": "2.8.5",
+    "dotenv": "14.2.0",
+    "express": "4.17.2",
+    "mysql": "2.18.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.16.8",
+    "@babel/core": "7.16.10",
+    "@babel/node": "7.16.8",
+    "@babel/preset-env": "7.16.11",
+    "nodemon": "2.0.15"
+  }
+}

@@ -1,0 +1,8 @@
+# server port
+PORT=4000
+
+
+# Data Base
+AWS_HOST=''
+AWS_USER=''
+AWS_PASSWORD=''
