@@ -19,6 +19,11 @@ const Form = ({ setRefreshList, edit = false, deletes = false }) => {
   const params = useParams()
   const navigate = useNavigate()
 
+  // Go to top when click for edit an operation
+  useEffect(() => {
+    if (edit) window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [params])
+
   useEffect(() => {
     if (edit && params) {
       FinanceService.get(params.id)

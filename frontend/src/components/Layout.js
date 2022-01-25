@@ -1,3 +1,4 @@
+import ScrollToTop from 'components/ScrollToTop'
 import { Outlet, Link } from 'react-router-dom'
 // Notify
 import { ToastContainer } from 'react-toastify'
@@ -28,6 +29,7 @@ export default function Layout () {
         <p>App to keep your numbers up to date</p>
         <Outlet />
       </Main>
+      <ScrollToTop showButtonAt={250} />
 
       <StyledFooter>Footer</StyledFooter>
     </Container>
