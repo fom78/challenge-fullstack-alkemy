@@ -5,19 +5,33 @@ import Operation from './Operation'
 // Styles
 import styled from 'styled-components'
 
-const List = ({ operations, setRefreshList, title = 'List of operations', actions = true }) => {
+const List = ({ categories, operations, setRefreshList, showFilters = true, title = 'List of operations', actions = true }) => {
   const [operationsToShow, setOperationsToShow] = useState([...operations])
 
-  const handleChange = e => {
-    showOper(e.target.value, operations)
+  const handleChangeTypeFilter = e => {
+    showOperationsFilterByType(e.target.value, operationsToShow)
+  }
+  const handleChangeCategoryFilter = e => {
+    showOperationsFilterByCategory(e.target.value, operationsToShow)
   }
 
-  const showOper = (show = 'all') => {
+  const showOperationsFilterByType = (show = 'all') => {
     if (show === 'all') {
       setOperationsToShow([...operations])
     } else {
       const filteredOperations = operations.filter(operation => {
         return operation.type === show
+      })
+      setOperationsToShow([...filteredOperations])
+    }
+  }
+
+  const showOperationsFilterByCategory = (show = 'all') => {
+    if (show === 'all') {
+      setOperationsToShow([...operations])
+    } else {
+      const filteredOperations = operations.filter(operation => {
+        return operation.category_id === parseInt(show)
       })
       setOperationsToShow([...filteredOperations])
     }
@@ -31,14 +45,31 @@ const List = ({ operations, setRefreshList, title = 'List of operations', action
     <>
       <Outlet />
       <h2>{title}</h2>
-      <div>
-        <label htmlFor='type-form'>Type</label>
-        <select id='type-form' onChange={handleChange} name='type'>
-          <option value='all'>All</option>
-          <option value='income'>Income</option>
-          <option value='expenditure'>Expenditure</option>
-        </select>
-      </div>
+      {showFilters &&
+        <div>
+          <div>
+            <label htmlFor='type-filter-form'>Type</label>
+            <select id='type-filter-form' onChange={handleChangeTypeFilter} name='type'>
+              <option value='all'>All</option>
+              <option value='income'>Income</option>
+              <option value='expenditure'>Expenditure</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor='category-filter-form'>Category</label>
+            <select id='category-filter-form' onChange={handleChangeCategoryFilter} name='category-filter'>
+              <option value='all'>All</option>
+              {categories && categories.map(category =>
+                <option
+                  key={category.id}
+                  value={category.id}
+                >
+                  {category.name}
+                </option>)}
+            </select>
+          </div>
+        </div>}
+
       <ListStyled>
         {operationsToShow && operationsToShow.map(operation => {
           return (

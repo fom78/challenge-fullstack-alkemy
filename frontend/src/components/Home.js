@@ -14,7 +14,7 @@ export default function Home ({ operations, quantity = 10 }) {
   return (
     <HomeStyled>
       <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
-      <List operations={lastOperations} title='Last operations added' />
+      <List operations={lastOperations} title='Last operations added' showFilters={false} />
     </HomeStyled>
   )
 }

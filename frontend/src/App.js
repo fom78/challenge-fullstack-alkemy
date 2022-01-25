@@ -12,11 +12,26 @@ import Layout from 'components/Layout'
 import List from 'components/List'
 // Service
 import OperationsService from 'services/operations.service'
+import CategoriesService from 'services/categories.service'
 
 function App () {
   const [operations, setOperations] = useState([])
+  const [categories, setCategories] = useState([])
   const [refreshList, setRefreshList] = useState(true)
 
+  // Get all Categories from DB
+  useEffect(() => {
+    CategoriesService.getAll()
+      .then((response) => {
+        const categoriesFounded = response.data
+        setCategories(categoriesFounded)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }, [])
+
+  // Get all Operations when refresh list
   useEffect(() => {
     if (refreshList) {
       setRefreshList(false)
@@ -37,10 +52,10 @@ function App () {
         <Route path='/' element={<Layout />}>
           <Route path='/' element={<Home operations={operations} />} />
           <Route path='home' element={<Home operations={operations} />} />
-          <Route path='list' element={<List operations={operations} setRefreshList={setRefreshList} />}>
+          <Route path='list' element={<List categories={categories} operations={operations} setRefreshList={setRefreshList} />}>
             <Route path='add' element={<Form setRefreshList={setRefreshList} />} />
-            <Route path='edit/:id' element={<Form setRefreshList={setRefreshList} edit />} />
-            <Route path='delete/:id' element={<Form setRefreshList={setRefreshList} deletes />} />
+            <Route path='edit/:id' element={<Form categories={categories} setRefreshList={setRefreshList} edit />} />
+            <Route path='delete/:id' element={<Form categories={categories} setRefreshList={setRefreshList} deletes />} />
           </Route>
           <Route path='*' element={<Error />} />
         </Route>

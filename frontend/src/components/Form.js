@@ -4,13 +4,13 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 // Service
-import CategoriesService from 'services/categories.service'
+// import CategoriesService from 'services/categories.service'
 import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Form = ({ setRefreshList, edit = false, deletes = false }) => {
-  const [categories, setCategories] = useState([])
+const Form = ({ categories, setRefreshList, edit = false, deletes = false }) => {
+  // const [categories, setCategories] = useState([])
   // Create state as an object
   const [operation, setOperation] = useState({
     concept: '',
@@ -28,17 +28,17 @@ const Form = ({ setRefreshList, edit = false, deletes = false }) => {
     if (edit) window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [params])
 
-  // Get all Categories from DB
-  useEffect(() => {
-    CategoriesService.getAll()
-      .then((response) => {
-        const categoriesFounded = response.data
-        setCategories(categoriesFounded)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }, [params])
+  // // Get all Categories from DB
+  // useEffect(() => {
+  //   CategoriesService.getAll()
+  //     .then((response) => {
+  //       const categoriesFounded = response.data
+  //       setCategories(categoriesFounded)
+  //     })
+  //     .catch((e) => {
+  //       console.log(e)
+  //     })
+  // }, [params])
 
   useEffect(() => {
     if (edit && params) {
@@ -228,7 +228,6 @@ const Form = ({ setRefreshList, edit = false, deletes = false }) => {
                   <option
                     key={category.id}
                     value={category.id}
-                    // selected={operation.categoryId === category.id}
                   >
                     {category.name}
                   </option>)}
