@@ -52,7 +52,7 @@ const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }
   }
 
   return (
-    <OperationStyled key={operation.id}>
+    <OperationStyled key={operation.id} bgTransparent={bgTransparent}>
       <div className='operationHeader'>
         <div className='date'>{formatedDate}</div>
         <div className={`type ${color}`}>{operation.type}</div>
@@ -89,7 +89,7 @@ const OperationStyled = styled.div`
   width: 100%;
   margin-bottom: 1rem;
   padding: 0.3rem;
-  ${(props) => (props.bgTransparent) ? 'background-color: transparent;' : 'background-color: var(--bg-primary);'}
+  ${(props) => props.bgTransparent ? 'background-color: transparent;' : 'background-color: var(--bg-primary);'}
   /* background-color: var(--bg-primary);
   background-color: transparent; */
   color: var(--text-primary);

@@ -1,4 +1,3 @@
-
 import { Outlet, Link } from 'react-router-dom'
 // Notify
 import { ToastContainer } from 'react-toastify'
@@ -44,9 +43,17 @@ border: 1px solid red; */
 
 `
 const NavBar = styled.nav`
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1;
   border-bottom: solid 1px;
-  padding-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+  padding-left: 0.5rem;
   background-color: var(--bg-primary);
+  
 
   & > a {
     color: var(--text-primary);
