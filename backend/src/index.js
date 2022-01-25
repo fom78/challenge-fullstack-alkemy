@@ -16,14 +16,11 @@ app.use(express.json());
 con.connect(function(err) {
   if (err) throw err;
   console.log("DataBase is connected!");
-  con.query('CREATE DATABASE IF NOT EXISTS finance;');
+  // con.query('CREATE DATABASE IF NOT EXISTS finance;');
   con.query('USE finance;');
-  con.query('CREATE TABLE IF NOT EXISTS users(id int NOT NULL AUTO_INCREMENT, username varchar(30), email varchar(255), age int, password varchar(255), PRIMARY KEY(id));', function(error, result, fields) {
-    console.log('Tabla users OK');
-  });
-  con.query('CREATE TABLE IF NOT EXISTS operations(id int NOT NULL AUTO_INCREMENT, concept varchar(255), type varchar(40), amount int,date DATE, PRIMARY KEY(id));', function(error, result, fields) {
-    console.log('Tabla operations OK');
-});
+    // con.query('CREATE TABLE IF NOT EXISTS users(id int NOT NULL AUTO_INCREMENT, username varchar(30), email varchar(255), age int, password varchar(255), PRIMARY KEY(id));', function(error, result, fields) {
+    //   console.log('Tabla users OK');
+    // });
   // con.end();
 });
 
