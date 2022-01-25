@@ -65,7 +65,10 @@ const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }
           : null}
       </div>
       <p className='operationConcept'>{operation.concept}</p>
-      <div className='operationAmount'>Amount: <span>$ {operation.amount}</span></div>
+      <div className='footer'>
+        <p className='operationAmount'>Amount: <span>$ {operation.amount}</span></p>
+        <p className=''>{operation.category_id}</p>
+      </div>
 
       <ConfirmDeleteModal
         state={stateModal}
@@ -117,6 +120,13 @@ const OperationStyled = styled.div`
     padding-left: 1rem;
   }
 
+  & .footer {
+    display: flex;
+    justify-content: space-between;
+    & > p:last-child {
+      color: red;
+    }
+  }
   & .operationAmount {
     margin-bottom: .5rem ;
     & > span {
