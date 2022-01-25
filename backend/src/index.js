@@ -6,6 +6,8 @@ import {con} from './database'
 import config from './config'
 // Routes
 import operationRouter from './routes/operations.routes'
+import categoryRouter from './routes/categories.routes'
+
 const app = express();
 
 app.use(cors());
@@ -26,6 +28,7 @@ con.connect(function(err) {
 
 // routes
 app.use('/operations', operationRouter)
+app.use('/categories', categoryRouter)
 
 app.listen(config.PORT, () => {
   console.log(`Server run on port ${config.PORT}`);

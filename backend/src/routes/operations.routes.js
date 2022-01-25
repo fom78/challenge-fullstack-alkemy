@@ -40,7 +40,7 @@ router.post("/", (req, res) => {
 
   // Route for get all operations
   router.get("/", (req, res) => {
-    con.query("SELECT * FROM operations ORDER BY date DESC", (err, result) => {
+    con.query("SELECT operations.*, categories.name AS category  FROM operations INNER JOIN categories ON operations.category_id = categories.id ORDER BY date DESC", (err, result) => {
       if (err) {
         console.log(err);
       } else {
