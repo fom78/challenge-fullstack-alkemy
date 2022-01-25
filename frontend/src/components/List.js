@@ -47,8 +47,8 @@ const List = ({ categories, operations, setRefreshList, showFilters = true, titl
       <Outlet />
       <h2>{title}</h2>
       {showFilters &&
-        <div>
-          <div>
+        <Filters>
+          <div className='filter'>
             <label htmlFor='type-filter-form'>Type</label>
             <select id='type-filter-form' onChange={handleChange} name='typeFilter'>
               <option value='all'>All</option>
@@ -56,7 +56,7 @@ const List = ({ categories, operations, setRefreshList, showFilters = true, titl
               <option value='expenditure'>Expenditure</option>
             </select>
           </div>
-          <div>
+          <div className='filter'>
             <label htmlFor='category-filter-form'>Category</label>
             <select id='category-filter-form' onChange={handleChange} name='categoryFilter'>
               <option value='all'>All</option>
@@ -65,11 +65,11 @@ const List = ({ categories, operations, setRefreshList, showFilters = true, titl
                   key={category.id}
                   value={category.id}
                 >
-                  {category.name}({category.id})
+                  {category.name}
                 </option>)}
             </select>
           </div>
-        </div>}
+        </Filters>}
 
       <ListStyled>
         {operationsToShow && operationsToShow.map(operation => {
@@ -89,7 +89,30 @@ const List = ({ categories, operations, setRefreshList, showFilters = true, titl
 
 export default List
 
-export const ListStyled = styled.div`
+const ListStyled = styled.div`
   padding-bottom: 1.5rem;
   background-color: var(--white);
+`
+const Filters = styled.div`
+  padding-bottom: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  & .filter {
+    display: flex;
+    flex-direction: column;
+    & > label {
+      font-size: .8rem;
+      margin-bottom: .3rem;
+    }
+    & > select {
+      height: 38px;
+      padding: 6px 10px;
+      background-color: #fff;
+      border: 1px solid #D1D1D1;
+      border-radius: 4px;
+      box-shadow: none;
+      box-sizing: border-box;
+    }
+  }
 `

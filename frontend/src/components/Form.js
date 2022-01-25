@@ -259,7 +259,7 @@ const Row = styled.div`
             margin-bottom: 1.5rem;
         }
         & > input[type=number], input[type=text], select {
-            appearance: none;
+            /* appearance: none; */
             height: 38px;
             padding: 6px 10px;
             background-color: #fff;
@@ -267,6 +267,7 @@ const Row = styled.div`
             border-radius: 4px;
             box-shadow: none;
             box-sizing: border-box;
+            margin-bottom: 1.5rem;
             width: 100%;
         }
     }
