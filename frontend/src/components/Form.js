@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+// Components
+import Spinner from './Spinner'
 // Notify
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 // Service
-// import CategoriesService from 'services/categories.service'
 import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Form = ({ categories, setRefreshList, edit = false, deletes = false }) => {
-  // const [categories, setCategories] = useState([])
+const Form = ({ categories, setRefreshList, edit = false }) => {
+  const [isLoading, setIsLoading] = useState(false)
   // Create state as an object
   const [operation, setOperation] = useState({
     concept: '',
@@ -28,27 +29,17 @@ const Form = ({ categories, setRefreshList, edit = false, deletes = false }) => 
     if (edit) window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [params])
 
-  // // Get all Categories from DB
-  // useEffect(() => {
-  //   CategoriesService.getAll()
-  //     .then((response) => {
-  //       const categoriesFounded = response.data
-  //       setCategories(categoriesFounded)
-  //     })
-  //     .catch((e) => {
-  //       console.log(e)
-  //     })
-  // }, [params])
-
   useEffect(() => {
     if (edit && params) {
+      setIsLoading(true)
       OperationsService.get(params.id)
         .then((response) => {
           const operationFounded = response.data
           // Convert to date correct for input.
           const date = new Date(operationFounded[0].date).toISOString().slice(0, 10)
 
-          setOperation({ ...operationFounded[0], date: date })
+          setOperation({ ...operationFounded[0], date: date, categoryId: operationFounded[0].category_id })
+          setIsLoading(false)
         })
         .catch((e) => {
           console.log(e)
@@ -70,28 +61,7 @@ const Form = ({ categories, setRefreshList, edit = false, deletes = false }) => 
   // Send req to API
   const actionOperation = e => {
     e.preventDefault()
-    if (deletes) {
-      setError(false)
-      OperationsService.delete(params.id)
-        .then((response) => {
-          setRefreshList(true)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-      // Notify user
-      toast.info('Operation dellll', {
-        position: 'top-center',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      })
-      // Redirect
-      navigate('/list')
-    }
+
     if (edit) {
       if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.categoryId === '') {
         setError(true)
@@ -101,20 +71,30 @@ const Form = ({ categories, setRefreshList, edit = false, deletes = false }) => 
       OperationsService.update(params.id, operation)
         .then((response) => {
           setRefreshList(true)
+          // Notify user
+          toast.info('Operation edited', {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
         })
         .catch((e) => {
           console.log(e)
+          // Notify user
+          toast.error('Operation not edited', {
+            position: 'top-center',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined
+          })
         })
-      // Notify user
-      toast.info('Operation edited', {
-        position: 'top-center',
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined
-      })
       // Redirect
       navigate('/list')
     }
@@ -163,6 +143,10 @@ const Form = ({ categories, setRefreshList, edit = false, deletes = false }) => 
       })
     }
   }, [error])
+
+  if (isLoading) {
+    return <Spinner />
+  }
 
   return (
     <Container>
