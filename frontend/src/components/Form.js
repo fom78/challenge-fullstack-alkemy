@@ -4,17 +4,21 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 // Service
-import FinanceService from 'services/finance.service'
+import CategoriesService from 'services/categories.service'
+import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
 const Form = ({ setRefreshList, edit = false, deletes = false }) => {
+  const [categories, setCategories] = useState([])
   // Create state as an object
   const [operation, setOperation] = useState({
     concept: '',
     amount: '',
     date: '',
-    type: ''
+    type: '',
+    category: '',
+    categoryId: ''
   })
   const params = useParams()
   const navigate = useNavigate()
@@ -24,9 +28,21 @@ const Form = ({ setRefreshList, edit = false, deletes = false }) => {
     if (edit) window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [params])
 
+  // Get all Categories from DB
+  useEffect(() => {
+    CategoriesService.getAll()
+      .then((response) => {
+        const categoriesFounded = response.data
+        setCategories(categoriesFounded)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }, [params])
+
   useEffect(() => {
     if (edit && params) {
-      FinanceService.get(params.id)
+      OperationsService.get(params.id)
         .then((response) => {
           const operationFounded = response.data
           // Convert to date correct for input.
@@ -56,7 +72,7 @@ const Form = ({ setRefreshList, edit = false, deletes = false }) => {
     e.preventDefault()
     if (deletes) {
       setError(false)
-      FinanceService.delete(params.id)
+      OperationsService.delete(params.id)
         .then((response) => {
           setRefreshList(true)
         })
@@ -77,12 +93,12 @@ const Form = ({ setRefreshList, edit = false, deletes = false }) => {
       navigate('/list')
     }
     if (edit) {
-      if (operation.concept === '' || operation.amount === '' || operation.date === '') {
+      if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.categoryId === '') {
         setError(true)
         return
       }
       setError(false)
-      FinanceService.update(params.id, operation)
+      OperationsService.update(params.id, operation)
         .then((response) => {
           setRefreshList(true)
         })
@@ -103,11 +119,11 @@ const Form = ({ setRefreshList, edit = false, deletes = false }) => {
       navigate('/list')
     }
     if (!edit) {
-      if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '') {
+      if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '' || operation.categoryId === '') {
         setError(true)
       } else {
         setError(false)
-        FinanceService.create(operation)
+        OperationsService.create(operation)
           .then((response) => {
             setRefreshList(true)
           })
@@ -199,6 +215,24 @@ const Form = ({ setRefreshList, edit = false, deletes = false }) => {
                 onChange={handleChange}
                 name='amount'
               />
+            </div>
+            <div>
+              <label htmlFor='category-form'>Category</label>
+              <select
+                id='category-form'
+                onChange={handleChange}
+                name='categoryId'
+                value={operation.categoryId}
+              >
+                {categories.map(category =>
+                  <option
+                    key={category.id}
+                    value={category.id}
+                    // selected={operation.categoryId === category.id}
+                  >
+                    {category.name}
+                  </option>)}
+              </select>
             </div>
           </Row>
           <Button type='submit' value={edit ? 'Edit' : 'Add'} green />

@@ -8,7 +8,6 @@ import styled from 'styled-components'
 const List = ({ operations, setRefreshList, title = 'List of operations', actions = true }) => {
   const [operationsToShow, setOperationsToShow] = useState([...operations])
 
-  console.log(operationsToShow)
   const handleChange = e => {
     showOper(e.target.value, operations)
   }
@@ -21,7 +20,6 @@ const List = ({ operations, setRefreshList, title = 'List of operations', action
         return operation.type === show
       })
       setOperationsToShow([...filteredOperations])
-      console.log('filteredOperations', filteredOperations)
     }
   }
 

@@ -8,7 +8,7 @@ import Spinner from './Spinner'
 // Notify
 import { toast } from 'react-toastify'
 // Services
-import FinanceService from 'services/finance.service'
+import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
@@ -28,7 +28,7 @@ const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }
 
   const handleDelete = (id) => {
     setIsDeleting(true)
-    FinanceService.delete(id)
+    OperationsService.delete(id)
       .then((response) => {
         setRefreshList(true)
         toast.success(`Operation id: ${id} deleted`, {
@@ -67,7 +67,7 @@ const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }
       <p className='operationConcept'>{operation.concept}</p>
       <div className='footer'>
         <p className='operationAmount'>Amount: <span>$ {operation.amount}</span></p>
-        <p className=''>{operation.category_id}</p>
+        <p className=''>{operation.category}</p>
       </div>
 
       <ConfirmDeleteModal

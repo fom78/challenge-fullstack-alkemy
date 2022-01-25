@@ -1,10 +1,9 @@
 import axios from 'axios'
+import { HOST } from 'config'
 
-// const API_URL = 'http://localhost:4000/operations/'
+const API_URL = `${HOST}operations/`
 
-const API_URL = 'https://personal-finance-alkemy.herokuapp.com/operations/'
-
-class FinanceService {
+class OperationsService {
   create (data) {
     return axios.post(API_URL, data)
   }
@@ -26,4 +25,4 @@ class FinanceService {
   }
 }
 
-export default new FinanceService()
+export default new OperationsService()

@@ -11,7 +11,7 @@ import Home from 'components/Home'
 import Layout from 'components/Layout'
 import List from 'components/List'
 // Service
-import FinanceService from 'services/finance.service'
+import OperationsService from 'services/operations.service'
 
 function App () {
   const [operations, setOperations] = useState([])
@@ -20,7 +20,7 @@ function App () {
   useEffect(() => {
     if (refreshList) {
       setRefreshList(false)
-      FinanceService.getAll()
+      OperationsService.getAll()
         .then((response) => {
           const operationsFounded = response.data
           setOperations(operationsFounded)
