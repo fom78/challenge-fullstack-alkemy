@@ -7,39 +7,40 @@ import styled from 'styled-components'
 
 const List = ({ categories, operations, setRefreshList, showFilters = true, title = 'List of operations', actions = true }) => {
   const [operationsToShow, setOperationsToShow] = useState([...operations])
-
-  const handleChangeTypeFilter = e => {
-    showOperationsFilterByType(e.target.value, operationsToShow)
+  const [filter, setFilter] = useState({
+    typeFilter: 'all',
+    categoryFilter: 'all'
+  })
+  const handleChange = e => {
+    setFilter({
+      ...filter,
+      [e.target.name]: e.target.value
+    })
   }
-  const handleChangeCategoryFilter = e => {
-    showOperationsFilterByCategory(e.target.value, operationsToShow)
-  }
 
-  const showOperationsFilterByType = (show = 'all') => {
-    if (show === 'all') {
-      setOperationsToShow([...operations])
-    } else {
-      const filteredOperations = operations.filter(operation => {
-        return operation.type === show
+  const showOperationsFilter = (show) => {
+    let filteredOperations = [...operations]
+    if (show.typeFilter !== 'all') {
+      filteredOperations = filteredOperations.filter(operation => {
+        return operation.type === show.typeFilter
       })
-      setOperationsToShow([...filteredOperations])
     }
-  }
-
-  const showOperationsFilterByCategory = (show = 'all') => {
-    if (show === 'all') {
-      setOperationsToShow([...operations])
-    } else {
-      const filteredOperations = operations.filter(operation => {
-        return operation.category_id === parseInt(show)
+    if (show.categoryFilter !== 'all') {
+      filteredOperations = filteredOperations.filter(operation => {
+        return operation.category_id === parseInt(show.categoryFilter)
       })
-      setOperationsToShow([...filteredOperations])
     }
+
+    setOperationsToShow([...filteredOperations])
   }
 
   useEffect(() => {
     setOperationsToShow([...operations])
   }, [operations])
+
+  useEffect(() => {
+    showOperationsFilter(filter)
+  }, [filter])
 
   return (
     <>
@@ -49,7 +50,7 @@ const List = ({ categories, operations, setRefreshList, showFilters = true, titl
         <div>
           <div>
             <label htmlFor='type-filter-form'>Type</label>
-            <select id='type-filter-form' onChange={handleChangeTypeFilter} name='type'>
+            <select id='type-filter-form' onChange={handleChange} name='typeFilter'>
               <option value='all'>All</option>
               <option value='income'>Income</option>
               <option value='expenditure'>Expenditure</option>
@@ -57,14 +58,14 @@ const List = ({ categories, operations, setRefreshList, showFilters = true, titl
           </div>
           <div>
             <label htmlFor='category-filter-form'>Category</label>
-            <select id='category-filter-form' onChange={handleChangeCategoryFilter} name='category-filter'>
+            <select id='category-filter-form' onChange={handleChange} name='categoryFilter'>
               <option value='all'>All</option>
               {categories && categories.map(category =>
                 <option
                   key={category.id}
                   value={category.id}
                 >
-                  {category.name}
+                  {category.name}({category.id})
                 </option>)}
             </select>
           </div>
