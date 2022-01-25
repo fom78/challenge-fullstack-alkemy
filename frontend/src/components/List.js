@@ -11,6 +11,7 @@ const List = ({ categories, operations, setRefreshList, showFilters = true, titl
     typeFilter: 'all',
     categoryFilter: 'all'
   })
+
   const handleChange = e => {
     setFilter({
       ...filter,
@@ -94,9 +95,9 @@ const ListStyled = styled.div`
   background-color: var(--white);
 `
 const Filters = styled.div`
+  display: flex;
   padding-bottom: 1rem;
   width: 100%;
-  display: flex;
   justify-content: space-between;
   & .filter {
     display: flex;

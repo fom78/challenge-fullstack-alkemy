@@ -18,18 +18,19 @@ export default function ButtonScrollTop ({ show, ...restOfProps }) {
 }
 
 const ButtonToTop = styled.svg`
-  bottom: 32px;
-  cursor: pointer;
-  filter: blur(10px);
-  opacity: 0;
   position: fixed;
+  bottom: 32px;
   right: 32px;
-  transition: all 0.6s ease;
+  filter: blur(10px);
+  fill: #000066;
   visibility: hidden;
+  transition: all 0.6s ease;
+  cursor: pointer;
+  opacity: 0;
   &.show {
+    visibility: visible;
     filter: blur(0);
     opacity: 1;
-    visibility: visible;
   }
   &:hover {
     border-color: #ccc;

@@ -29,6 +29,7 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
     if (edit) window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [params])
 
+  // Refresh form when params in url change
   useEffect(() => {
     if (edit && params) {
       setIsLoading(true)
@@ -259,16 +260,15 @@ const Row = styled.div`
             margin-bottom: 1.5rem;
         }
         & > input[type=number], input[type=text], select {
-            /* appearance: none; */
             height: 38px;
+            width: 100%;
             padding: 6px 10px;
+            margin-bottom: 1.5rem;
             background-color: #fff;
             border: 1px solid #D1D1D1;
             border-radius: 4px;
             box-shadow: none;
             box-sizing: border-box;
-            margin-bottom: 1.5rem;
-            width: 100%;
         }
     }
 `
@@ -278,9 +278,12 @@ const Button = styled.input`
     width: 100%;
     height: 38px;
     padding: 0 30px;
+    margin-bottom: 0.5rem;
+    box-sizing: border-box;
     text-align: center;
     font-size: 11px;
     font-weight: 600;
+    color: #fff;
     line-height: 38px;
     letter-spacing: .1rem;
     text-transform: uppercase;
@@ -289,13 +292,9 @@ const Button = styled.input`
     background-color: transparent;
     border-radius: 4px;
     border: 1px solid #bbb;
-    cursor: pointer;
-    margin-bottom: 0.5rem;
-    box-sizing: border-box;
-    color: #FFF;
-    background-color: #33C3F0;
-    border-color: #33C3F0;
+    background-color: #33c3f0;
+    border-color: #33c3f0;
     ${(props) => props.red && 'border-color: var(--red); background-color: var(--red);'}
-    ${(props) => props.green && 'border-color: var(--green); background-color: var(--green);'}
-    
+    ${(props) => props.green && 'border-color: var(--green); background-color: var(--green);'}    
+    cursor: pointer;
 `

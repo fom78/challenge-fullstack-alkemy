@@ -29,10 +29,10 @@ export default function ScrollToTop ({ showButtonAt }) {
 }
 
 const Chivato = styled.div`
-  opacity: 0;
-  height: 1px;
-  left: 1px;
   position: absolute;
   top: ${(props) => props.showButtonAt}px;
+  left: 1px;
+  height: 1px;
   width: 1px;
+  opacity: 0;
 `

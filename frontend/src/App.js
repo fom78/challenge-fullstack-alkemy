@@ -50,10 +50,6 @@ function App () {
     }
   }, [refreshList])
 
-  // if (isLoading) {
-  //   return <Spinner />
-  // }
-
   return (
     <>
       {isLoading && <Spinner />}

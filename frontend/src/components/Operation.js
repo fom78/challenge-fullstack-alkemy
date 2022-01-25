@@ -92,27 +92,24 @@ const OperationStyled = styled.div`
   width: 100%;
   margin-bottom: 1rem;
   padding: 0.3rem;
-  ${(props) => props.bgTransparent ? 'background-color: transparent;' : 'background-color: var(--bg-primary);'}
-  /* background-color: var(--bg-primary);
-  background-color: transparent; */
-  color: var(--text-primary);
   font-size: .8rem;
+  color: var(--text-primary);
+  ${(props) => props.bgTransparent ? 'background-color: transparent;' : 'background-color: var(--bg-primary);'}
   
   & .operationHeader {
-    width: 100%;
-    font-size: .7rem;
-    padding-bottom: .5rem;
     display: flex;
+    width: 100%;
+    padding-bottom: .5rem;
+    font-size: .7rem;
     justify-content: space-between;
 
     & .type {
-      text-transform: uppercase;
       margin:auto;
       padding: 4px;
+      text-transform: uppercase;
     }
     & .green {border: 2px solid var(--green);}
     & .red {border: 2px solid var(--red);}
-
   }
 
   & .operationConcept {
@@ -128,27 +125,24 @@ const OperationStyled = styled.div`
     margin-bottom: .5rem ;
     font-size: .7rem;
     & > span {
-    font-weight: bold;
-    font-size: .9rem;
+      font-size: .9rem;
+      font-weight: bold;
+    }
   }
-}
   & .operationCategory {
     font-size: .6rem;
     & > span {
-      font-weight: bold;
       font-size: .9rem;
+      font-weight: bold;
+    }
   }
-}
-
   & .btn-action > button {
     margin-right: .5rem;
+    color: var(--white);
     background-color: transparent;
     border: 1px solid transparent;
     cursor: pointer;
-    color: var(--white);
     
-    &:hover {
-      border: 1px solid var(--white);
-    }    
+    &:hover { border: 1px solid var(--white); }    
   } 
 `

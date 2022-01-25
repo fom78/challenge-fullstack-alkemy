@@ -19,18 +19,18 @@ html {
 }
 
 body {
-  font-family: 'Roboto', sans-serif, 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  display: flex;
   width: 100%;
   min-height: 100vh;
   margin: 0;
-  display: flex;
   flex-direction: column;
+  font-family: 'Roboto', sans-serif, 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
   text-rendering: optimizeSpeed;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
   color: var(--text-se);
+  overflow-x: hidden;
   background-color: var(--white-color);
+  scroll-behavior: smooth;
 }
 
 a {

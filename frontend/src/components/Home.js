@@ -21,7 +21,5 @@ export default function Home ({ operations, quantity = 10 }) {
 
 const HomeStyled = styled.section`
   background-color: var(--white);
-  & >h1 {
-    font-size: 1.3rem
-  }
+  & >h1 { font-size: 1.3rem }
 `

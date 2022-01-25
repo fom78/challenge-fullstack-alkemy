@@ -40,40 +40,36 @@ export const Container = styled.div`
   padding: .8rem;
 `
 export const Main = styled.main`
-/* height: calc(100vh - var(--footer-height) - 27px);
-border: 1px solid red; */
-
+  text-align:center;
 `
 const NavBar = styled.nav`
   position: fixed;
   top: 0;
   right: 0;
-  width: 100%;
   z-index: 1;
-  border-bottom: solid 1px;
+  width: 100%;
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
   padding-left: 0.5rem;
+  border-bottom: solid 1px;
   background-color: var(--bg-primary);
-  
-
   & > a {
     color: var(--text-primary);
     font-weight: bold;
   }
 `
 
-export const StyledFooter = styled.footer`
-position: fixed;
-bottom: 0;
-width: 100%;
-height: 38px;
-display: flex;
-display: none;
-justify-content: space-between;
-align-items: center;
-padding: 0 25px;
-background: rgba(1, 1, 1, 0.7);
-color: hsla(0, 0%, 100%, 0.9);
-font-size: 13px;
+const StyledFooter = styled.footer`
+  position: fixed;
+  bottom: 0;
+  display: flex;
+  display: none;
+  height: 38px;
+  width: 100%;
+  padding: 0 25px;
+  justify-content: space-between;
+  color: hsla(0, 0, 100%, 0.9);
+  font-size: 13px;
+  align-items: center;
+  background: rgba(1, 1, 1, 0.7);
 `

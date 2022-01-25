@@ -6,8 +6,8 @@ export default function Spinner () {
 }
 
 const Container = styled.div`
-    height:200px;
     display: flex;
+    height:200px;
     align-items: center;
     justify-content: center;
     .spinner,.spinner:after {
@@ -17,6 +17,7 @@ const Container = styled.div`
       border-radius: 50%;
     }
     .spinner {
+      position: absolute;
       background-color: transparent;
       border-top: 5px solid rgb(66,139,202);
       border-right: 5px solid rgb(66,139,202);
@@ -26,7 +27,6 @@ const Container = styled.div`
       animation-timing-function: linear;
       animation-duration: .8s;
       animation-name: spinner-loading;
-      position: absolute;
     }
     @keyframes spinner-loading {
         0% {
