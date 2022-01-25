@@ -8,6 +8,7 @@ Content-Type: application/json
 {
     "concept":"Mouse",
     "type": "expenditure",
+    "categoryId": 74,
     "amount": 343,
     "date": "2021-03-25"
 }
@@ -19,6 +20,7 @@ Content-Type: application/json
 {
     "concept":"Salary",
     "type": "income",
+    "categoryId": 6,
     "amount": 2100,
     "date": "2021-11-02"
 }
@@ -27,14 +29,15 @@ Content-Type: application/json
 DELETE http://localhost:4000/operations/7
 
 ###
-PUT http://localhost:4000/operations/10
+PUT http://localhost:4000/operations/5
 Content-Type: application/json 
 
 {
     "concept":"PR in web of Paul",
     "amount": 550,
+    "categoryId": 8,
     "date": "2021-12-17"
 }
 
 ###
-GET http://localhost:4000/operations/6
+GET http://localhost:4000/operations/5
