@@ -11,6 +11,8 @@ import Home from 'components/Home'
 import Layout from 'components/Layout'
 import List from 'components/List'
 import Spinner from 'components/Spinner'
+// Hooks
+import useUser from 'hooks/useUser'
 // Service
 import OperationsService from 'services/operations.service'
 import CategoriesService from 'services/categories.service'
@@ -20,6 +22,8 @@ function App () {
   const [operations, setOperations] = useState([])
   const [categories, setCategories] = useState([])
   const [refreshList, setRefreshList] = useState(true)
+
+  const { user, login, logout } = useUser()
 
   // Get all Categories from DB
   useEffect(() => {
@@ -35,27 +39,35 @@ function App () {
 
   // Get all Operations when refresh list
   useEffect(() => {
-    if (refreshList) {
-      setIsLoading(true)
+    if (refreshList || user) {
+      if (user) {
+        setIsLoading(true)
+        OperationsService.getAll()
+          .then((response) => {
+            const operationsFounded = response.data
+            setOperations(operationsFounded)
+            setIsLoading(false)
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+      } else {
+        setOperations([])
+      }
       setRefreshList(false)
-      OperationsService.getAll()
-        .then((response) => {
-          const operationsFounded = response.data
-          setOperations(operationsFounded)
-          setIsLoading(false)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
     }
-  }, [refreshList])
+    if (user === null) {
+      setOperations([])
+    }
+  }, [refreshList, user])
 
   return (
+
     <>
       {isLoading && <Spinner />}
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Layout />}>
+          <Route path='/' element={<Layout user={user} login={login} logout={logout} />}>
             <Route path='/' element={<Home operations={operations} />} />
             <Route path='home' element={<Home operations={operations} />} />
             <Route path='list' element={<List categories={categories} operations={operations} setRefreshList={setRefreshList} />}>

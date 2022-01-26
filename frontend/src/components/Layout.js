@@ -5,7 +5,7 @@ import { ToastContainer } from 'react-toastify'
 // Styles
 import styled from 'styled-components'
 
-export default function Layout () {
+export default function Layout ({ user = null, login, logout }) {
   return (
     <Container>
       <ToastContainer
@@ -20,12 +20,18 @@ export default function Layout () {
         pauseOnHover
       />
       <NavBar>
-        <Link to='/home'>Home</Link> |{' '}
-        <Link to='/list'>list</Link> |{' '}
-        <Link to='/list/add'>Add</Link>
+        <div className='menues'>
+          <Link to='/home'>Home</Link> |{' '}
+          <Link to='/list'>list</Link> |{' '}
+          <Link to='/list/add'>Add</Link>
+        </div>
+        <div className='login'>
+          {user ? <Link onClick={logout} to='/home'>Logout</Link> : <Link onClick={login} to='/home'>Login</Link>}
+        </div>
       </NavBar>
       <Main>
         <h1>Personal Finance</h1>
+        <h2>{user && user.name}</h2>
         <p>App to keep your numbers up to date</p>
         <Outlet />
       </Main>
@@ -47,15 +53,24 @@ const NavBar = styled.nav`
   top: 0;
   right: 0;
   z-index: 1;
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
   padding-left: 0.5rem;
   border-bottom: solid 1px;
   background-color: var(--bg-primary);
-  & > a {
+  & .menues > a {
     color: var(--text-primary);
     font-weight: bold;
+  }
+  & > .login {
+    padding-right: 1rem;
+    & > a {
+      color: var(--text-primary);
+      cursor: pointer;
+    }
   }
 `
 
