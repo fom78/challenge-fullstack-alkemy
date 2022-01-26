@@ -9,9 +9,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "lint": "./node_modules/.bin/standard",
+    "lint-fix": "./node_modules/.bin/standard --fix",
     "build": "babel src --out-dir build",
     "dev": "nodemon src/index.js --exec babel-node",
     "start": "node build/index.js"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./node_modules/standard/eslintrc.json"
+    ]
+  },
+  "standard": {
+    "ignore": [
+      "build/*"
+    ]
   },
   "keywords": [],
   "license": "ISC",
@@ -19,6 +31,7 @@
     "cors": "2.8.5",
     "dotenv": "14.2.0",
     "express": "4.17.2",
+    "morgan": "1.10.0",
     "mysql": "2.18.1"
   },
   "devDependencies": {
@@ -26,6 +39,7 @@
     "@babel/core": "7.16.10",
     "@babel/node": "7.16.8",
     "@babel/preset-env": "7.16.11",
-    "nodemon": "2.0.15"
+    "nodemon": "2.0.15",
+    "standard": "16.0.4"
   }
 }
