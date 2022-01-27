@@ -18,7 +18,7 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
     amount: '',
     date: '',
     type: '',
-    category: '',
+    categoryId: '',
     userId: user.uid
   })
   const params = useParams()
@@ -100,6 +100,7 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
       navigate('/list')
     }
     if (!edit) {
+      console.log(operation.categoryId)
       if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '' || operation.categoryId === '') {
         setError(true)
       } else {
@@ -142,6 +143,7 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
         draggable: true,
         progress: undefined
       })
+      setError(false)
     }
   }, [error])
 
@@ -211,6 +213,7 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
                 name='categoryId'
                 value={operation.categoryId}
               >
+                {!edit && <option value=''>- Select a Category -</option>}
                 {categories.map(category =>
                   <option
                     key={category.id}
