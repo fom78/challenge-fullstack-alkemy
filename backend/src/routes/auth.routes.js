@@ -7,12 +7,9 @@ const router = Router()
 // Route for add user
 router.post('/', (req, res) => {
   const token = req.headers['x-access-token']
-
-  // console.log('token desde auth: ', token)
   const user = req.body
-  // console.log('el param', req.body)
-  // Find if user exists
 
+  // Find if user exists
   con.query('SELECT * FROM users WHERE uid = ' + con.escape(user.uid), (err, result) => {
     if (err) {
       console.log(err)
@@ -29,7 +26,6 @@ router.post('/', (req, res) => {
             return res.status(201).send({ message: 'user added succefully' })
           }
         })
-    //   return res.status(413).send({ message: 'The category not found' })
     } else {
       con.query(
         'UPDATE users SET actual_access_token = ? WHERE uid = ?',

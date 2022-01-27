@@ -12,7 +12,6 @@ import styled from 'styled-components'
 
 const Form = ({ user, categories, setRefreshList, edit = false }) => {
   const [isLoading, setIsLoading] = useState(false)
-  console.log('user', user)
   // Create state as an object
   const [operation, setOperation] = useState({
     concept: '',
@@ -149,11 +148,13 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
   if (isLoading) {
     return <Spinner />
   }
+  const color = (operation.type === 'income') ? 'green' : 'red'
 
   return (
     <Container>
       <div>
-        <h4>Enter new operation</h4>
+        <h4>{edit ? 'Edit the operation' : 'Enter new operation'}</h4>
+        {edit && <div className={`type ${color}`}>{operation.type}</div>}
         <form onSubmit={actionOperation}>
           <Row>
             <div>
@@ -238,6 +239,9 @@ const Container = styled.div`
     margin: 0 auto;
     padding: 0 20px;
     box-sizing: border-box;
+    & > div > div:first-of-type {margin-bottom: 1rem;}
+    & .green {border: 2px solid var(--green);}
+    & .red {border: 2px solid var(--red);}
 `
 
 const Row = styled.div`
