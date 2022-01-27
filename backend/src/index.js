@@ -8,6 +8,7 @@ import config from './config'
 // Routes
 import operationRouter from './routes/operations.routes'
 import categoryRouter from './routes/categories.routes'
+import authRouter from './routes/auth.routes'
 
 const app = express()
 
@@ -26,6 +27,7 @@ con.connect(function (err) {
 // routes
 app.use('/operations', operationRouter)
 app.use('/categories', categoryRouter)
+app.use('/auth', authRouter)
 
 app.listen(config.PORT, () => {
   console.log(`Server run on port ${config.PORT}`)

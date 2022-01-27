@@ -10,8 +10,9 @@ import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Form = ({ categories, setRefreshList, edit = false }) => {
+const Form = ({ user, categories, setRefreshList, edit = false }) => {
   const [isLoading, setIsLoading] = useState(false)
+  console.log('user', user)
   // Create state as an object
   const [operation, setOperation] = useState({
     concept: '',
@@ -19,7 +20,7 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
     date: '',
     type: '',
     category: '',
-    categoryId: ''
+    userId: user.uid
   })
   const params = useParams()
   const navigate = useNavigate()
@@ -33,7 +34,7 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
   useEffect(() => {
     if (edit && params) {
       setIsLoading(true)
-      OperationsService.get(params.id)
+      OperationsService.get(params.id, user.token)
         .then((response) => {
           const operationFounded = response.data
           // Convert to date correct for input.
@@ -69,7 +70,7 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
         return
       }
       setError(false)
-      OperationsService.update(params.id, operation)
+      OperationsService.update(params.id, operation, user.token)
         .then((response) => {
           setRefreshList(true)
           // Notify user
@@ -104,7 +105,7 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
         setError(true)
       } else {
         setError(false)
-        OperationsService.create(operation)
+        OperationsService.create(operation, user.token)
           .then((response) => {
             setRefreshList(true)
           })

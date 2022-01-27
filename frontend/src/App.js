@@ -42,11 +42,10 @@ function App () {
     if (refreshList || user) {
       if (user) {
         setIsLoading(true)
-        OperationsService.getAll()
+        OperationsService.getAll(user.token)
           .then((response) => {
             const operationsFounded = response.data
             setOperations(operationsFounded)
-            setIsLoading(false)
           })
           .catch((e) => {
             console.log(e)
@@ -54,11 +53,12 @@ function App () {
       } else {
         setOperations([])
       }
-      setRefreshList(false)
     }
     if (user === null) {
       setOperations([])
     }
+    setIsLoading(false)
+    setRefreshList(false)
   }, [refreshList, user])
 
   return (
@@ -71,8 +71,8 @@ function App () {
             <Route path='/' element={<Home operations={operations} />} />
             <Route path='home' element={<Home operations={operations} />} />
             <Route path='list' element={<List categories={categories} operations={operations} setRefreshList={setRefreshList} />}>
-              <Route path='add' element={<Form categories={categories} setRefreshList={setRefreshList} />} />
-              <Route path='edit/:id' element={<Form categories={categories} setRefreshList={setRefreshList} edit />} />
+              <Route path='add' element={<Form user={user} categories={categories} setRefreshList={setRefreshList} />} />
+              <Route path='edit/:id' element={<Form user={user} categories={categories} setRefreshList={setRefreshList} edit />} />
             </Route>
             <Route path='*' element={<Error />} />
           </Route>

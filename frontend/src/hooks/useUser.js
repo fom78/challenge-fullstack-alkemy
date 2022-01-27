@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 import { initializeApp } from 'firebase/app'
 import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 
+import AuthService from 'services/auth.service'
+
 export const USER_STATES = {
   NOT_LOGGED: null,
   NOT_KNOWN: undefined
@@ -29,13 +31,18 @@ export default function useUser () {
       .then((result) => {
       // This gives you a Google Access Token. You can use it to access the Google API.
         const credential = GoogleAuthProvider.credentialFromResult(result)
-        const token = credential.accessToken
+        const token = credential.idToken
         // The signed-in user info.
         const userSignIn = result.user
         const normalizedUser = userSignIn ? mapUserFromFirebaseAuthToUser(userSignIn, token) : null
 
-        setUser(normalizedUser)
-        console.log('user....', userSignIn)
+        AuthService.create(normalizedUser, token)
+          .then((response) => {
+            setUser(normalizedUser)
+          })
+          .catch((e) => {
+            console.log(e)
+          })
 
         return { userSignIn, token }
       // ...
@@ -54,6 +61,18 @@ export default function useUser () {
       console.log(error)
     })
   }
+
+  // function logout () {
+  //   signOut(auth).then(() => {
+  //     // Sign-out successful.
+  //     console.log('Sign-out successful.')
+  //     setUser(USER_STATES.NOT_LOGGED)
+  //   }).catch((error) => {
+  //     // An error happened.
+  //     console.log(error)
+  //   })
+  // }
+
   const mapUserFromFirebaseAuthToUser = (user, token) => {
     const { email, photoURL, uid, displayName } = user
     const name = (displayName) || ''
@@ -68,11 +87,10 @@ export default function useUser () {
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const normalizedUser = user ? mapUserFromFirebaseAuthToUser(user) : null
-        console.log(normalizedUser)
-        setUser(normalizedUser)
-      }
+      // if (user) {
+      //   console.log(user)
+      //   // setUser(normalizedUser)
+      // }
     })
   }, [])
 
