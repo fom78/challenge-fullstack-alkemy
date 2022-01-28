@@ -22,8 +22,11 @@ export default function Layout ({ user = null, login, logout }) {
       <NavBar>
         <div className='menues'>
           <Link to='/home'>Home</Link> |{' '}
-          <Link to='/list'>list</Link> |{' '}
-          <Link to='/list/add'>Add</Link> |{' '}
+          {user &&
+            <>
+              <Link to='/list'>list</Link> |{' '}
+              <Link to='/list/add'>Add</Link> |{' '}
+            </>}
           <Link to='/about'>About</Link>
         </div>
         <div className='login'>
@@ -38,7 +41,6 @@ export default function Layout ({ user = null, login, logout }) {
       </Main>
       <ScrollToTop showButtonAt={250} />
 
-      <StyledFooter>Footer</StyledFooter>
     </Container>
   )
 }
@@ -73,19 +75,4 @@ const NavBar = styled.nav`
       cursor: pointer;
     }
   }
-`
-
-const StyledFooter = styled.footer`
-  position: fixed;
-  bottom: 0;
-  display: flex;
-  display: none;
-  height: 38px;
-  width: 100%;
-  padding: 0 25px;
-  justify-content: space-between;
-  color: hsla(0, 0, 100%, 0.9);
-  font-size: 13px;
-  align-items: center;
-  background: rgba(1, 1, 1, 0.7);
 `

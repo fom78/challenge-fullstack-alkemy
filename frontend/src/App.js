@@ -72,10 +72,11 @@ function App () {
             <Route path='/' element={<Home operations={operations} />} />
             <Route path='/about' element={<About />} />
             <Route path='home' element={<Home operations={operations} />} />
-            <Route path='list' element={<List categories={categories} operations={operations} setRefreshList={setRefreshList} />}>
-              <Route path='add' element={<Form user={user} categories={categories} setRefreshList={setRefreshList} />} />
-              <Route path='edit/:id' element={<Form user={user} categories={categories} setRefreshList={setRefreshList} edit />} />
-            </Route>
+            {user &&
+              <Route path='list' element={<List categories={categories} operations={operations} setRefreshList={setRefreshList} />}>
+                <Route path='add' element={<Form user={user} categories={categories} setRefreshList={setRefreshList} />} />
+                <Route path='edit/:id' element={<Form user={user} categories={categories} setRefreshList={setRefreshList} edit />} />
+              </Route>}
             <Route path='*' element={<Error />} />
           </Route>
         </Routes>
