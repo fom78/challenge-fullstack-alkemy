@@ -2,7 +2,9 @@
 # Indice
 
 - [Consigna dada por Alkemy](#consigna)
-- [backend](#backend)
+- [Como correr en local](#runlocal)
+- [Sobre el frontend](#frontend)
+- [Sobre el backend](#backend)
 
 
 <a name="consigna"></a>
@@ -80,11 +82,43 @@ autor: Fernando Masino
 <br />
 [Volver al Indice](#top)
 
+<a name="runlocal"></a>
+## Correr en local
+- Clonar el repositorio e instalar dependecias
+```bash
+git clone git@github.com:fom78/challenge-fullstack-alkemy.git
+cd backend/
+npm run install
+cd ../frontend/
+npm run install
+```
+- Crear la base de datos y tablas segun el archivo ubicado en backend/database.sql
+- Colocar las credenciales de acceso en el archivo backend/.env.
+- Acceso a firebase, deberas crear un proyecto de autenticacion y permitir login con google y colocar las credenciales en el frontend/.env
+
+- Una vez todo esto realizado, en el archivo frontend/src/config.js comentar el host remoto y descomentar el local.
+
+- Ahora ya podemos correr la app en local
+```bash
+cd backend/
+npm run dev
+cd ../frontend/
+npm start
+```
+
 <a name="backend"></a>
 ## El backend
-- El repositorio se encuantra por [aqui](https://github.com/fom78/back-challenge-alkemy)
-- api desarrollada en NodeJS y servidor express.
+- El repositorio es este mismo
+- api desarrollada en NodeJS y servidor express. Desplegada en heroku
+- [Link a la API](https://personal-finance-alkemy.herokuapp.com/api/v1)
+- Base de datos relacional MySql, desplegada en AWS.
 
+<a name="frontend"></a>
+## El frontend
+- El repositorio es este mismo
+- Desarrollado en React y estilado con Styled components. Desplegado en Vercel.
+- [Link a la App](https://challenge-fullstack-alkemy.vercel.app)
+- Autenticacion de usuarios con Firebase
 
 <br />
 [Volver al Indice](#top)

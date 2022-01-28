@@ -23,7 +23,8 @@ export default function Layout ({ user = null, login, logout }) {
         <div className='menues'>
           <Link to='/home'>Home</Link> |{' '}
           <Link to='/list'>list</Link> |{' '}
-          <Link to='/list/add'>Add</Link>
+          <Link to='/list/add'>Add</Link> |{' '}
+          <Link to='/about'>About</Link>
         </div>
         <div className='login'>
           {user ? <Link onClick={logout} to='/home'>Logout</Link> : <Link onClick={login} to='/home'>Login</Link>}
