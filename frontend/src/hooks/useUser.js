@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 // firebase
 import { initializeApp } from 'firebase/app'
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
 
 import AuthService from 'services/auth.service'
 
@@ -38,6 +38,7 @@ export default function useUser () {
 
         AuthService.create(normalizedUser, token)
           .then((response) => {
+            localStorage.setItem('user', JSON.stringify(normalizedUser))
             setUser(normalizedUser)
           })
           .catch((e) => {
@@ -55,23 +56,13 @@ export default function useUser () {
     signOut(auth).then(() => {
       // Sign-out successful.
       console.log('Sign-out successful.')
+      localStorage.setItem('user', JSON.stringify(USER_STATES.NOT_LOGGED))
       setUser(USER_STATES.NOT_LOGGED)
     }).catch((error) => {
       // An error happened.
       console.log(error)
     })
   }
-
-  // function logout () {
-  //   signOut(auth).then(() => {
-  //     // Sign-out successful.
-  //     console.log('Sign-out successful.')
-  //     setUser(USER_STATES.NOT_LOGGED)
-  //   }).catch((error) => {
-  //     // An error happened.
-  //     console.log(error)
-  //   })
-  // }
 
   const mapUserFromFirebaseAuthToUser = (user, token) => {
     const { email, photoURL, uid, displayName } = user
@@ -86,12 +77,8 @@ export default function useUser () {
   }
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      // if (user) {
-      //   console.log(user)
-      //   // setUser(normalizedUser)
-      // }
-    })
+    const userLocalStorage = JSON.parse(localStorage.getItem('user'))
+    if (userLocalStorage) { setUser(userLocalStorage) }
   }, [])
 
   return { user, setUser, login, logout }
