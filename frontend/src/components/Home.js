@@ -1,9 +1,10 @@
 import { useMemo } from 'react'
 import styled from 'styled-components'
 // Components
+import Google from './icons/Google'
 import List from './List'
 
-export default function Home ({ operations, quantity = 10 }) {
+export default function Home ({ user, login, operations, quantity = 10 }) {
   const lastOperations = operations.sort((a, b) => b.id - a.id).slice(0, quantity)
 
   const balance = useMemo(() => operations.reduce((previousValue, currentValue) => {
@@ -13,13 +14,56 @@ export default function Home ({ operations, quantity = 10 }) {
 
   return (
     <HomeStyled>
-      <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
-      <List operations={lastOperations} title='Last operations added' showFilters={false} />
+      {user
+        ? (
+          <>
+            <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
+            <List operations={lastOperations} title='Last operations added' showFilters={false} />
+          </>)
+        : (
+          <>
+            <h1 className='login'>Log in to your account</h1>
+            <button type='button' className='btn-google' onClick={login}>
+              <Google width={40} height={40} />
+              <div>
+                <div>Log in with Google</div>
+              </div>
+            </button>
+          </>
+          )}
+
     </HomeStyled>
   )
 }
 
 const HomeStyled = styled.section`
   background-color: var(--white);
-  & >h1 { font-size: 1.3rem }
+  & >h1 { font-size: 1.3rem; }
+  & .login { text-align: left;}
+  & .btn-google {
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    padding: 0px 2px 0px 0px;
+    border: 1px solid rgb(66, 133, 244);
+    border-radius: 2px;
+    width: 296px;
+    box-sizing: content-box;
+    cursor: pointer;
+    & > svg {filter: brightness(0.95);}
+    & > div {
+      -webkit-box-flex: 1;
+      flex-grow: 1;
+      height: 40px;
+      background-color: rgb(66, 133, 244);
+      & > div {
+        color: rgb(255, 255, 255);
+        font-size: 14px;
+        font-weight: bold;
+        /* font-family: Akzidenz; */
+        line-height: 40px;
+        height: 40px;
+      }
+    }
+  }
 `

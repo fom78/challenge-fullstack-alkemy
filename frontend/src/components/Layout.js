@@ -35,7 +35,9 @@ export default function Layout ({ user = null, login, logout }) {
       </NavBar>
       <Main>
         <h1>Personal Finance</h1>
-        <h2>{user && user.name}</h2>
+        <div className='user'>
+          <h2>{user && user.name}</h2><img className='avatar' src={user.avatar} />
+        </div>
         <p>App to keep your numbers up to date</p>
         <Outlet />
       </Main>
@@ -50,6 +52,18 @@ export const Container = styled.div`
 `
 export const Main = styled.main`
   text-align:center;
+  & .user {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    & > h2 {padding-right: 10px;}
+    
+  }
+  & .avatar {
+    width: 40px;
+    height: 40px;
+    align-self: center;
+  }
 `
 const NavBar = styled.nav`
   position: fixed;

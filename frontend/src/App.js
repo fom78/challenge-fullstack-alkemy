@@ -69,9 +69,9 @@ function App () {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<Layout user={user} login={login} logout={logout} />}>
-            <Route path='/' element={<Home operations={operations} />} />
+            <Route path='/' element={<Home user={user} login={login} operations={operations} />} />
             <Route path='/about' element={<About />} />
-            <Route path='home' element={<Home operations={operations} />} />
+            <Route path='home' element={<Home user={user} login={login} operations={operations} />} />
             {user &&
               <Route path='list' element={<List categories={categories} operations={operations} setRefreshList={setRefreshList} />}>
                 <Route path='add' element={<Form user={user} categories={categories} setRefreshList={setRefreshList} />} />
