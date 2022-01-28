@@ -5,6 +5,7 @@ import {
   Route
 } from 'react-router-dom'
 // components
+import About from 'components/About'
 import Error from 'components/Error'
 import Form from 'components/Form'
 import Home from 'components/Home'
@@ -69,6 +70,7 @@ function App () {
         <Routes>
           <Route path='/' element={<Layout user={user} login={login} logout={logout} />}>
             <Route path='/' element={<Home operations={operations} />} />
+            <Route path='/about' element={<About />} />
             <Route path='home' element={<Home operations={operations} />} />
             <Route path='list' element={<List categories={categories} operations={operations} setRefreshList={setRefreshList} />}>
               <Route path='add' element={<Form user={user} categories={categories} setRefreshList={setRefreshList} />} />
