@@ -35,9 +35,10 @@ export default function Layout ({ user = null, login, logout }) {
       </NavBar>
       <Main>
         <h1>Personal Finance</h1>
-        <div className='user'>
-          <h2>{user && user.name}</h2><img className='avatar' src={user.avatar} />
-        </div>
+        {user &&
+          <div className='user'>
+            <h2>{user.name}</h2><img className='avatar' src={user.avatar} />
+          </div>}
         <p>App to keep your numbers up to date</p>
         <Outlet />
       </Main>

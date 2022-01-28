@@ -79,7 +79,7 @@ const List = ({ categories, operations, setRefreshList, showFilters = true, titl
               key={operation.id}
               operation={operation}
               actions={actions}
-              setRefreshList={setRefreshList}
+              setRefreshList={() => setRefreshList()}
             />
           )
         })}

@@ -30,7 +30,6 @@ const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }
     setIsDeleting(true)
     OperationsService.delete(id)
       .then((response) => {
-        setRefreshList(true)
         toast.success(`Operation id: ${id} deleted`, {
           position: 'top-center',
           autoClose: 1000,
@@ -41,6 +40,7 @@ const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }
           progress: undefined
         })
         setIsDeleting(false)
+        setRefreshList(true)
       })
       .catch((e) => {
         console.log(e)
