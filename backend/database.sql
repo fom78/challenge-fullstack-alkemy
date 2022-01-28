@@ -21,11 +21,8 @@ DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50),
-  `last_name` varchar(50),
-  `username` varchar(50) NOT NULL UNIQUE,
-  `email` varchar(100) NOT NULL UNIQUE,
-  `password` varchar(255) NOT NULL,
+  `uid` varchar(50) NOT NULL UNIQUE,
+  `actual_access_token` TEXT,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -43,12 +40,12 @@ CREATE TABLE `operations` (
   `category_id` int(11) NOT NULL,
   `amount` int(11) ,
   `date` DATE ,
---   `user_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_Operation_Category` (`category_id`),
---   KEY `FK_Operation_User` (`user_id`),
-  CONSTRAINT `FK_Operation_Category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`)
---   CONSTRAINT `FK_Operation_User` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  KEY `FK_Operation_User` (`user_id`),
+  CONSTRAINT `FK_Operation_Category` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`),
+  CONSTRAINT `FK_Operation_User` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -57,4 +54,4 @@ CREATE TABLE `operations` (
 insert into categories values(null,'Comida'),(null,'Turismo'),(null,'Trabajo'),(null,'Recreacion'),(null,'Informatica')
 ,(null,'Moda'),(null,'Reparacion'),(null,'Otros');
 
-INSERT INTO operations VALUES (null,'prueba','income',1,334,'2021-03-25');
+INSERT INTO operations VALUES (null,'prueba','income',1,334,'2021-03-25',1);

@@ -10,4 +10,7 @@
 
 # misc
 /backend/.env
+/frontend/.env.development
+/frontend/.env.production
+/frontend/.env
 

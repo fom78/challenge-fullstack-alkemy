@@ -10,7 +10,7 @@ import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Form = ({ categories, setRefreshList, edit = false }) => {
+const Form = ({ user, categories, setRefreshList, edit = false }) => {
   const [isLoading, setIsLoading] = useState(false)
   // Create state as an object
   const [operation, setOperation] = useState({
@@ -18,8 +18,8 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
     amount: '',
     date: '',
     type: '',
-    category: '',
-    categoryId: ''
+    categoryId: '',
+    userId: user.uid
   })
   const params = useParams()
   const navigate = useNavigate()
@@ -33,7 +33,7 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
   useEffect(() => {
     if (edit && params) {
       setIsLoading(true)
-      OperationsService.get(params.id)
+      OperationsService.get(params.id, user.token)
         .then((response) => {
           const operationFounded = response.data
           // Convert to date correct for input.
@@ -69,7 +69,7 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
         return
       }
       setError(false)
-      OperationsService.update(params.id, operation)
+      OperationsService.update(params.id, operation, user.token)
         .then((response) => {
           setRefreshList(true)
           // Notify user
@@ -100,11 +100,12 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
       navigate('/list')
     }
     if (!edit) {
+      console.log(operation.categoryId)
       if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '' || operation.categoryId === '') {
         setError(true)
       } else {
         setError(false)
-        OperationsService.create(operation)
+        OperationsService.create(operation, user.token)
           .then((response) => {
             setRefreshList(true)
           })
@@ -142,17 +143,20 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
         draggable: true,
         progress: undefined
       })
+      setError(false)
     }
   }, [error])
 
   if (isLoading) {
     return <Spinner />
   }
+  const color = (operation.type === 'income') ? 'green' : 'red'
 
   return (
     <Container>
       <div>
-        <h4>Enter new operation</h4>
+        <h4>{edit ? 'Edit the operation' : 'Enter new operation'}</h4>
+        {edit && <div className={`type ${color}`}>{operation.type}</div>}
         <form onSubmit={actionOperation}>
           <Row>
             <div>
@@ -209,6 +213,7 @@ const Form = ({ categories, setRefreshList, edit = false }) => {
                 name='categoryId'
                 value={operation.categoryId}
               >
+                {!edit && <option value=''>- Select a Category -</option>}
                 {categories.map(category =>
                   <option
                     key={category.id}
@@ -237,6 +242,9 @@ const Container = styled.div`
     margin: 0 auto;
     padding: 0 20px;
     box-sizing: border-box;
+    & > div > div:first-of-type {margin-bottom: 1rem;}
+    & .green {border: 2px solid var(--green);}
+    & .red {border: 2px solid var(--red);}
 `
 
 const Row = styled.div`
