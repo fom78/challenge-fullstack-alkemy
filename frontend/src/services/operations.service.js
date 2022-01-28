@@ -12,8 +12,8 @@ class OperationsService {
     return axios.put(API_URL + id, data, { headers: { 'x-access-token': accessToken } })
   }
 
-  delete (id) {
-    return axios.delete(API_URL + id)
+  delete (id, accessToken) {
+    return axios.delete(API_URL + id, { headers: { 'x-access-token': accessToken } })
   }
 
   get (id, accessToken) {

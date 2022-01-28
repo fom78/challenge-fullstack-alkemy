@@ -12,11 +12,10 @@ import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }) => {
+const Operation = ({ operation, user, actions, setRefreshList, bgTransparent = false }) => {
   const [stateModal, setStateModal] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const navigate = useNavigate()
-
   // Convert date to short date, format: d/mm/yy
   const date = new Date(operation.date)
   const formatedDate = new Intl.DateTimeFormat('es-AR', { year: '2-digit', month: '2-digit', day: 'numeric' }).format(date)
@@ -26,9 +25,9 @@ const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }
     navigate(`/list/edit/${id}`)
   }
 
-  const handleDelete = (id) => {
+  const handleDelete = (id, token) => {
     setIsDeleting(true)
-    OperationsService.delete(id)
+    OperationsService.delete(id, token)
       .then((response) => {
         toast.success(`Operation id: ${id} deleted`, {
           position: 'top-center',
@@ -73,7 +72,7 @@ const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }
       <ConfirmDeleteModal
         state={stateModal}
         changeState={setStateModal}
-        handleDelete={() => handleDelete(operation.id)}
+        handleDelete={() => handleDelete(operation.id, user.token)}
         handleEdit={() => handleEdit(operation.id)}
         operation={operation}
         showOverlay

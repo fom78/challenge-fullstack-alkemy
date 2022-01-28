@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Google from './icons/Google'
 import List from './List'
 
-export default function Home ({ user, login, operations, quantity = 10 }) {
+export default function Home ({ user, login, operations, quantity = 10, setRefreshList }) {
   const lastOperations = operations.sort((a, b) => b.id - a.id).slice(0, quantity)
 
   const balance = useMemo(() => operations.reduce((previousValue, currentValue) => {
@@ -18,7 +18,13 @@ export default function Home ({ user, login, operations, quantity = 10 }) {
         ? (
           <>
             <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
-            <List operations={lastOperations} title='Last operations added' showFilters={false} />
+            <List
+              user={user}
+              operations={lastOperations}
+              title='Last operations added'
+              showFilters={false}
+              setRefreshList={setRefreshList}
+            />
           </>)
         : (
           <>

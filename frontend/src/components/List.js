@@ -5,7 +5,7 @@ import Operation from './Operation'
 // Styles
 import styled from 'styled-components'
 
-const List = ({ categories, operations, setRefreshList, showFilters = true, title = 'List of operations', actions = true }) => {
+const List = ({ categories, user, operations, setRefreshList, showFilters = true, title = 'List of operations', actions = true }) => {
   const [operationsToShow, setOperationsToShow] = useState([...operations])
   const [filter, setFilter] = useState({
     typeFilter: 'all',
@@ -79,6 +79,7 @@ const List = ({ categories, operations, setRefreshList, showFilters = true, titl
               key={operation.id}
               operation={operation}
               actions={actions}
+              user={user}
               setRefreshList={() => setRefreshList()}
             />
           )

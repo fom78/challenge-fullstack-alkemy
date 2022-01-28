@@ -89,9 +89,11 @@ router.put('/:id', [verifyToken], (req, res) => {
 })
 
 // Route for delete an operation by id
-router.delete('/:id', (req, res) => {
+router.delete('/:id', [verifyToken], (req, res) => {
   const id = req.params.id
-  con.query('DELETE FROM operations WHERE id = ?', id, (err, result) => {
+  const userId = req.actualUserId
+
+  con.query('DELETE FROM operations WHERE id = ? AND user_id = ?', [id, userId], (err, result) => {
     if (err) {
       console.log(err)
     } else {
