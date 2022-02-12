@@ -13,7 +13,14 @@ import authRouter from './routes/auth.routes'
 const apiUrl = '/api/v1/'
 const app = express()
 
-app.use(cors())
+app.use(cors(
+  {
+    origin: [
+      'http://localhost:3000',
+      'https://challenge-fullstack-alkemy.vercel.app',
+      'https://challenge-fullstack-alkemy.vercel.app/']
+  }
+))
 app.use(morgan('dev'))
 app.use(express.json())
 
