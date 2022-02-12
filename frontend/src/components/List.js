@@ -28,7 +28,7 @@ const List = ({ categories, user, operations, setRefreshList, showFilters = true
     }
     if (show.categoryFilter !== 'all') {
       filteredOperations = filteredOperations.filter(operation => {
-        return operation.category_id === parseInt(show.categoryFilter)
+        return operation.category.id === parseInt(show.categoryFilter)
       })
     }
 

@@ -3,7 +3,7 @@ import { User } from '../models'
 export const saveUser = async (req, res, next) => {
   try {
     const token = req.headers['x-access-token']
-    const { uid } = req.body.user
+    const { uid } = req.body
 
     const userFound = await User.findOne(
       {

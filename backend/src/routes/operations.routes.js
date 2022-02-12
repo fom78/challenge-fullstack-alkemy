@@ -16,9 +16,9 @@ router.get('/', [verifyToken], getOperations)
 router.get('/:id', [verifyToken], getOperation)
 
 // Edit an operation by id
-router.put('/:id', editOperation)
+router.put('/:id', [verifyToken], editOperation)
 
 // Delete an operation by id
-router.delete('/:id', deleteOperation)
+router.delete('/:id', [verifyToken], deleteOperation)
 
 export default router

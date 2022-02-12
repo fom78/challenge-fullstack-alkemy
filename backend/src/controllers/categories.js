@@ -4,7 +4,7 @@ export const getCategories = async (req, res, next) => {
   try {
     const categories = await Category.findAll(
       {
-        attributes: ['name'],
+        attributes: ['name', 'id'],
         order: [['name', 'ASC']]
       }
     )

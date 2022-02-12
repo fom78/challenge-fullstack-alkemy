@@ -37,9 +37,9 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
         .then((response) => {
           const operationFounded = response.data
           // Convert to date correct for input.
-          const date = new Date(operationFounded[0].date).toISOString().slice(0, 10)
+          const date = new Date(operationFounded.date).toISOString().slice(0, 10)
 
-          setOperation({ ...operationFounded[0], date: date, categoryId: operationFounded[0].category_id })
+          setOperation({ ...operationFounded, date: date, categoryId: operationFounded.category.id })
           setIsLoading(false)
         })
         .catch((e) => {

@@ -66,7 +66,7 @@ const Operation = ({ operation, user, actions, setRefreshList, bgTransparent = f
       <p className='operationConcept'>{operation.concept}</p>
       <div className='footer'>
         <p className='operationAmount'>Amount: <span>$ {operation.amount}</span></p>
-        <p className='operationCategory'>Category: <span>{operation.category}</span></p>
+        <p className='operationCategory'>Category: <span>{operation.category.name}</span></p>
       </div>
 
       <ConfirmDeleteModal

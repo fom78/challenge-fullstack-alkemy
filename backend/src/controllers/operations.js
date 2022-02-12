@@ -36,7 +36,7 @@ export const getOperations = async (req, res, next) => {
         include: [
           {
             model: Category,
-            attributes: ['name']
+            attributes: ['name', 'id']
           },
           {
             model: User,
@@ -60,11 +60,12 @@ export const getOperation = async (req, res, next) => {
     const actualUserId = req.body.actualUserId
     const operation = await Operation.findOne(
       {
+        attributes: ['concept', 'date', 'amount', 'type', 'id'],
         where: { id, user_id: actualUserId },
         include: [
           {
             model: Category,
-            attributes: ['name']
+            attributes: ['name', 'id']
           },
           {
             model: User,
