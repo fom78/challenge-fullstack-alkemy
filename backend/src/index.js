@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
 // DataBase
-import { con } from './database'
+import { db } from './config/db'
 // Config
 import config from './config'
 // Routes
@@ -17,13 +17,11 @@ app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 
-con.connect(function (err) {
-  if (err) throw err
-  console.log('DataBase is connected!')
-  // con.query('CREATE DATABASE IF NOT EXISTS finance;');
-  con.query('USE finance;')
-  // con.end();
-})
+// Connect to DB
+// db.authenticate()
+db.sync({ force: false })
+  .then(() => console.log('Connection has been established successfully.'))
+  .catch(error => console.log('Unable to connect to the database:', error))
 
 // routes
 app.use(`${apiUrl}operations`, operationRouter)

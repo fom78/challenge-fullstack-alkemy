@@ -35,7 +35,6 @@ export default function useUser () {
         // The signed-in user info.
         const userSignIn = result.user
         const normalizedUser = userSignIn ? mapUserFromFirebaseAuthToUser(userSignIn, token) : null
-
         AuthService.create(normalizedUser, token)
           .then((response) => {
             localStorage.setItem('user', JSON.stringify(normalizedUser))

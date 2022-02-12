@@ -1,45 +1,58 @@
-@token = eyJhbGciOiJSUzI1NiIsImtpZCI6IjllYWEwMjZmNjM1MTU3ZGZhZDUzMmU0MTgzYTZiODIzZDc1MmFkMWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMzE0OTAwMzYyMjExLTdqOGhhYm5ndGhjNWVyMmJ2MDVqM2wyZTJlaWZnbTNoLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMzE0OTAwMzYyMjExLTdqOGhhYm5ndGhjNWVyMmJ2MDVqM2wyZTJlaWZnbTNoLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAxODc1MDAyNDA1OTE4OTEwNDM5IiwiZW1haWwiOiJmb203OGFAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiJzYWlqVEdIQmlCZmhNeDZCUmtQdXlRIiwiaWF0IjoxNjQzMzA3NDAzLCJleHAiOjE2NDMzMTEwMDN9.LToUR4zwSJDhHNu7YXjQ4povz-BLtunVGDvmc50VdOPZTHAO4WyVXle4EqMDDOYUQhvAj7wEeXrXm6NKfRP2QfnFldXY2H0bOnxrd6YYzyN1S4r7Evp6PpqlonxNSQxcZkUSBRxQ8ots6T0FgjDsozOdM3-UYB7ta8Xc5TDS24bg2e8oLTUrXBv3p8TVrBH2BevpOXZQYI4m_o7tKn58iewJ22mcZDQLXj6AKnKzhGw2Ejn99JVcueZfBudOtQJrpXX02kfdo9HDhmCO_QMKTiKb5nQPQo9V0e6FAftfd-BbVCz_c7SsU4_RVz78Z3lTW7A_2A-jSXRrulCuNd2mvg
+@token = eyJhbGciOiJSUzI1NiIsImtpZCI6IjllYWEwMjZmNjM1MTU3ZGZhZDUzMmU0MTgzYTZiODIzZDc1MmFkMWQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMzE0OTAwMzYyMjExLTdqOGhhYm5ndGhjNWVyMmJ2MDVqM2wyZTJlaWZnbTNoLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMzE0OTAwMzYyMjExLTdqOGhhYm5ndGhjNWVyMmJ2MDVqM2wyZTJlaWZnbTNoLmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTAzMDE2NTUwNzUwMDQ3NjI1MTg3IiwiZW1haWwiOiJmb203OGhAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsImF0X2hhc2giOiIzZllob213MTNjcVpIazZNUXpiNGdRIiwiaWF0IjoxNjQzMzI4ODc0LCJleHAiOjE2NDMzMzI0NzR9.eSDamFdxMRchqSQf36NIKFa5TQqN0Rdwou_N80FUJlrjE5Lrxr-IoR4xQ6FWIx-3Yly-Jwo53qMAARJWnOJ70TaFxLmVuqs80gmooc-3ftmxcady7NDpzMfeQvPrdKU9Sg162WXYidc8r4bsgOmwLpRlL1LWlu9DOUf0S1z90w4XkDEHQNcBpTdicDYBdXyLabosXZURAzInr3u5yYMa2u4QbSdXTsnnJkl_Zlyt6S87eLaHwN2fZ22e42ghoQc-ptb-ZH2eCqUJhuoHf9QP3RaIR8xLIbRF__C-HeDWeRxdGCRFo9o_fh8DbQVnKigNiD4GpHp8gMYUCaROch-d2Q
+@tokenFalsoTest = yygsahygsaudfkjsahf
+###
+GET http://localhost:4000/api/v1/operations
+x-access-token:{{tokenFalsoTest}}
+Content-Type: application/json 
 
 ###
-GET http://localhost:4000/operations
-x-access-token:{{token}}
-###
-POST http://localhost:4000/operations
+POST http://localhost:4000/api/v1/operations
+x-access-token:{{tokenFalsoTest}}
 Content-Type: application/json 
 
 {
-    "concept":"Mouse",
+    "concept":"Mouse!!!Q",
     "type": "expenditure",
-    "categoryId": 74,
-    "amount": 343,
+    "categoryId": 5,
+    "amount": 5556,
     "date": "2021-03-25"
 }
 
+
 ###
-POST http://localhost:4000/operations
+DELETE http://localhost:4000/api/v1/operations/19
 Content-Type: application/json 
 
 {
-    "concept":"Salary",
-    "type": "income",
-    "categoryId": 6,
-    "amount": 2100,
-    "date": "2021-11-02"
+    "actualUserId":1
 }
-
 ###
-DELETE http://localhost:4000/operations/7
-
-###
-PUT http://localhost:4000/operations/30
+PUT http://localhost:4000/api/v1/operations/23
 Content-Type: application/json 
 
 {
-    "concept":"Algoul",
+    "concept":"Algo Editado",
     "amount": 51,
     "categoryId": 5,
     "date": "2021-12-17"
 }
 
 ###
-GET http://localhost:4000/operations/30
+GET http://localhost:4000/api/v1/operations/40
+x-access-token:{{token}}
+Content-Type: application/json 
+
+
+###
+GET http://localhost:4000/api/v1/categories
+x-access-token:{{token}}
+Content-Type: application/json 
+
+###
+POST http://localhost:4000/api/v1/auth
+x-access-token:{{tokenFalsoTest}}
+Content-Type: application/json 
+
+{
+    "user":{"uid":"eererer43545"}
+}
