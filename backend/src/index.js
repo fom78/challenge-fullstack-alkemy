@@ -18,7 +18,10 @@ app.use(cors(
     origin: [
       'http://localhost:3000',
       'https://challenge-fullstack-alkemy.vercel.app',
-      'https://challenge-fullstack-alkemy.vercel.app/']
+      'https://challenge-fullstack-alkemy.vercel.app/'
+    ],
+    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token']
   }
 ))
 app.use(morgan('dev'))
