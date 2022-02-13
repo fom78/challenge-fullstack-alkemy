@@ -3,14 +3,22 @@ import styled from 'styled-components'
 // Components
 import Google from './icons/Google'
 import List from './List'
+import Spinner from './Spinner'
+// context
+import { useAuth } from 'context/AuthContext'
+// hooks
+import useOperations from 'hooks/useOperations'
 
-export default function Home ({ user, login, operations, quantity = 10, setRefreshList }) {
-  const lastOperations = operations.sort((a, b) => b.id - a.id).slice(0, quantity)
+export default function Home () {
+  const { login, user } = useAuth()
+  const { operations, isLoading } = useOperations()
 
   const balance = useMemo(() => operations.reduce((previousValue, currentValue) => {
     if (currentValue.type === 'expenditure') return previousValue - currentValue.amount
     return previousValue + currentValue.amount
   }, 0), [operations])
+
+  if (isLoading) return (<Spinner />)
 
   return (
     <HomeStyled>
@@ -19,11 +27,9 @@ export default function Home ({ user, login, operations, quantity = 10, setRefre
           <>
             <h1>Actual Balance: $ {parseFloat(balance).toFixed(2)}</h1>
             <List
-              user={user}
-              operations={lastOperations}
               title='Last operations added'
               showFilters={false}
-              setRefreshList={setRefreshList}
+              quantity={2}
             />
           </>)
         : (
@@ -37,7 +43,6 @@ export default function Home ({ user, login, operations, quantity = 10, setRefre
             </button>
           </>
           )}
-
     </HomeStyled>
   )
 }

@@ -2,10 +2,17 @@ import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 // Components
 import Operation from './Operation'
+// context
+import { useAuth } from 'context/AuthContext'
+// hooks
+import useOperations from 'hooks/useOperations'
 // Styles
 import styled from 'styled-components'
 
-const List = ({ categories, user, operations, setRefreshList, showFilters = true, title = 'List of operations', actions = true }) => {
+const List = ({ categories, showFilters = true, title = 'List of operations', actions = true, quantity = 'all' }) => {
+  const { user } = useAuth()
+  const { setRefreshList, operations } = useOperations()
+
   const [operationsToShow, setOperationsToShow] = useState([...operations])
   const [filter, setFilter] = useState({
     typeFilter: 'all',
@@ -34,6 +41,15 @@ const List = ({ categories, user, operations, setRefreshList, showFilters = true
 
     setOperationsToShow([...filteredOperations])
   }
+
+  useEffect(() => {
+    if (quantity !== 'all') {
+      const lastOperations = operations.sort((a, b) => b.id - a.id).slice(0, quantity)
+      console.log('aaaaa', lastOperations)
+      setOperationsToShow([...lastOperations])
+    }
+    // return () => { }
+  }, [])
 
   useEffect(() => {
     setOperationsToShow([...operations])
@@ -73,6 +89,7 @@ const List = ({ categories, user, operations, setRefreshList, showFilters = true
         </Filters>}
 
       <ListStyled>
+        {console.log(operationsToShow)}
         {operationsToShow && operationsToShow.map(operation => {
           return (
             <Operation

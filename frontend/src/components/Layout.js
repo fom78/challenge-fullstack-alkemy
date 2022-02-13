@@ -1,11 +1,16 @@
-import ScrollToTop from 'components/ScrollToTop'
 import { Outlet, Link } from 'react-router-dom'
+// components
+import ScrollToTop from 'components/ScrollToTop'
+// context
+import { useAuth } from 'context/AuthContext'
 // Notify
 import { ToastContainer } from 'react-toastify'
 // Styles
 import styled from 'styled-components'
 
-export default function Layout ({ user = null, login, logout }) {
+export default function Layout () {
+  const { logout, user } = useAuth()
+
   return (
     <Container>
       <ToastContainer
@@ -30,7 +35,7 @@ export default function Layout ({ user = null, login, logout }) {
           <Link to='/about'>About</Link>
         </div>
         <div className='login'>
-          {user ? <Link onClick={logout} to='/home'>Logout</Link> : <Link onClick={login} to='/home'>Login</Link>}
+          {user ? <Link onClick={logout} to='/home'>Logout</Link> : <Link to='/login'>Login</Link>}
         </div>
       </NavBar>
       <Main>

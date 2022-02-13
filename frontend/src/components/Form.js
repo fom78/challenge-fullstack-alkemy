@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 // Components
 import Spinner from './Spinner'
+// context
+import { useAuth } from 'context/AuthContext'
+// hooks
+import useOperations from 'hooks/useOperations'
 // Notify
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -10,7 +14,9 @@ import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Form = ({ user, categories, setRefreshList, edit = false }) => {
+const Form = ({ categories, edit = false }) => {
+  const { user } = useAuth()
+  const { setRefreshList } = useOperations()
   const [isLoading, setIsLoading] = useState(false)
   // Create state as an object
   const [operation, setOperation] = useState({
