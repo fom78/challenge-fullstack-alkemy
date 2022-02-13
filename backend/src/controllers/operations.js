@@ -19,7 +19,7 @@ export const saveOperation = async (req, res, next) => {
         category_id: categoryId
       }
     )
-    return res.status(201).send(operationAdded)
+    res.status(201).send(operationAdded)
   } catch (error) {
     console.log(error)
     next()

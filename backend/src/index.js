@@ -1,3 +1,4 @@
+import '@babel/polyfill'
 import express from 'express'
 import cors from 'cors'
 import morgan from 'morgan'
@@ -13,18 +14,7 @@ import authRouter from './routes/auth.routes'
 const apiUrl = '/api/v1/'
 const app = express()
 
-app.use(cors(
-  {
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:4000',
-      'https://challenge-fullstack-alkemy.vercel.app',
-      'https://challenge-fullstack-alkemy.vercel.app/'
-    ],
-    methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token']
-  }
-))
+app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
 
