@@ -4,8 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Spinner from './Spinner'
 // context
 import { useAuth } from 'context/AuthContext'
-// hooks
-import useOperations from 'hooks/useOperations'
 // Notify
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -16,7 +14,6 @@ import styled from 'styled-components'
 
 const Form = ({ categories, edit = false }) => {
   const { user } = useAuth()
-  const { setRefreshList } = useOperations()
   const [isLoading, setIsLoading] = useState(false)
   // Create state as an object
   const [operation, setOperation] = useState({
@@ -25,7 +22,7 @@ const Form = ({ categories, edit = false }) => {
     date: '',
     type: '',
     categoryId: '',
-    userId: user.uid
+    userId: user ? user.uid : ''
   })
   const params = useParams()
   const navigate = useNavigate()
@@ -52,6 +49,7 @@ const Form = ({ categories, edit = false }) => {
           console.log(e)
         })
     }
+    return () => {}
   }, [params])
 
   // Verify error
@@ -75,9 +73,9 @@ const Form = ({ categories, edit = false }) => {
         return
       }
       setError(false)
+      setIsLoading(true)
       OperationsService.update(params.id, operation, user.token)
         .then((response) => {
-          setRefreshList(true)
           // Notify user
           toast.info('Operation edited', {
             position: 'top-center',
@@ -88,6 +86,7 @@ const Form = ({ categories, edit = false }) => {
             draggable: true,
             progress: undefined
           })
+          setIsLoading(false)
         })
         .catch((e) => {
           console.log(e)
@@ -106,28 +105,28 @@ const Form = ({ categories, edit = false }) => {
       navigate('/list')
     }
     if (!edit) {
-      console.log(operation.categoryId)
       if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '' || operation.categoryId === '') {
         setError(true)
       } else {
         setError(false)
+        setIsLoading(true)
         OperationsService.create(operation, user.token)
           .then((response) => {
-            setRefreshList(true)
+            // Notify user
+            toast.success('Operation added', {
+              position: 'top-center',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined
+            })
+            setIsLoading(false)
           })
           .catch((e) => {
             console.log(e)
           })
-        // Notify user
-        toast.success('Operation added', {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined
-        })
         // Redirect
         navigate('/list')
       }
@@ -231,7 +230,7 @@ const Form = ({ categories, edit = false }) => {
             </div>
           </Row>
           <Button type='submit' value={edit ? 'Edit' : 'Add'} green />
-          <Button type='submit' value='Cancel' onClick={cancelButton} red />
+          <Button type='button' value='Cancel' onClick={cancelButton} red />
 
         </form>
       </div>

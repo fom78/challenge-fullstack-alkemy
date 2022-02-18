@@ -25,7 +25,7 @@ const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }
   const color = (operation.type === 'income') ? 'green' : 'red'
 
   const handleEdit = (id) => {
-    navigate(`/list/edit/${id}`)
+    navigate(`/edit/${id}`)
   }
 
   const handleDelete = (id, token) => {

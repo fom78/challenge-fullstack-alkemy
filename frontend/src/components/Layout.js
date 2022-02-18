@@ -1,4 +1,4 @@
-import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link, useNavigate } from 'react-router-dom'
 // components
 import ScrollToTop from 'components/ScrollToTop'
 // context
@@ -10,6 +10,11 @@ import styled from 'styled-components'
 
 export default function Layout () {
   const { logout, user } = useAuth()
+  const navigate = useNavigate()
+
+  const addOperation = () => {
+    navigate('/add')
+  }
 
   return (
     <Container>
@@ -29,8 +34,8 @@ export default function Layout () {
           <Link to='/home'>Home</Link> |{' '}
           {user &&
             <>
-              <Link to='/list'>list</Link> |{' '}
-              <Link to='/list/add'>Add</Link> |{' '}
+              <Link to='/list'>List</Link> |{' '}
+              <Link to='/add' onClick={addOperation}>Add</Link> |{' '}
             </>}
           <Link to='/about'>About</Link>
         </div>
@@ -87,6 +92,10 @@ const NavBar = styled.nav`
   & .menues > a {
     color: var(--text-primary);
     font-weight: bold;
+    & .active {
+        color: red;
+        font-size: 18px;
+    }
   }
   & > .login {
     padding-right: 1rem;

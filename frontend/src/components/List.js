@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 // Components
 import Operation from './Operation'
+import Form from './Form'
 // hooks
 import useOperations from 'hooks/useOperations'
 // Styles
 import styled from 'styled-components'
 
-const List = ({ categories, showFilters = true, title = 'List of operations', actions = true, quantity = 'all' }) => {
+const List = ({ categories, showFilters = true, title = 'List of operations', actions = true, quantity = 'all', edit = false }) => {
   const { setRefreshList, operations } = useOperations()
 
   const [operationsToShow, setOperationsToShow] = useState([...operations])
@@ -59,6 +60,8 @@ const List = ({ categories, showFilters = true, title = 'List of operations', ac
   return (
     <>
       <Outlet />
+      {edit &&
+        <Form categories={categories} edit />}
       <h2>{title}</h2>
       {showFilters &&
         <Filters>
@@ -86,7 +89,6 @@ const List = ({ categories, showFilters = true, title = 'List of operations', ac
         </Filters>}
 
       <ListStyled>
-        {console.log(operationsToShow)}
         {operationsToShow && operationsToShow.map(operation => {
           return (
             <Operation

@@ -39,10 +39,10 @@ function App () {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Layout />}>
-              <Route path='/' element={<Home />} />
+              <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
               <Route path='/about' element={<About />} />
               <Route path='/login' element={<Login />} />
-              <Route path='home' element={<Home />} />
+              <Route path='home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
               <Route
                 path='list'
                 element={
@@ -52,11 +52,9 @@ function App () {
                     />
                   </ProtectedRoute>
                 }
-              >
-
-                <Route path='add' element={<Form categories={categories} />} />
-                <Route path='edit/:id' element={<Form categories={categories} edit />} />
-              </Route>
+              />
+              <Route path='add' element={<ProtectedRoute><Form categories={categories} /></ProtectedRoute>} />
+              <Route path='edit/:id' element={<ProtectedRoute><Form categories={categories} edit /></ProtectedRoute>} />
               <Route path='*' element={<Error />} />
             </Route>
           </Routes>
