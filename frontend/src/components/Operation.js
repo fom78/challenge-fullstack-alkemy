@@ -5,6 +5,8 @@ import ConfirmDeleteModal from './ConfirmDeleteModal'
 import Edit from './icons/Edit'
 import Delete from './icons/Delete'
 import Spinner from './Spinner'
+// context
+import { useAuth } from 'context/AuthContext'
 // Notify
 import { toast } from 'react-toastify'
 // Services
@@ -12,7 +14,8 @@ import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Operation = ({ operation, user, actions, setRefreshList, bgTransparent = false }) => {
+const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }) => {
+  const { user } = useAuth()
   const [stateModal, setStateModal] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const navigate = useNavigate()

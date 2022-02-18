@@ -2,15 +2,12 @@ import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 // Components
 import Operation from './Operation'
-// context
-import { useAuth } from 'context/AuthContext'
 // hooks
 import useOperations from 'hooks/useOperations'
 // Styles
 import styled from 'styled-components'
 
 const List = ({ categories, showFilters = true, title = 'List of operations', actions = true, quantity = 'all' }) => {
-  const { user } = useAuth()
   const { setRefreshList, operations } = useOperations()
 
   const [operationsToShow, setOperationsToShow] = useState([...operations])
@@ -96,7 +93,6 @@ const List = ({ categories, showFilters = true, title = 'List of operations', ac
               key={operation.id}
               operation={operation}
               actions={actions}
-              user={user}
               setRefreshList={() => setRefreshList()}
             />
           )
