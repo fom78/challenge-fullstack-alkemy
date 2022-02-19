@@ -1,17 +1,15 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
-// components
-import Google from './icons/Google'
 // context
 import { useAuth } from 'context/AuthContext'
 
-export function Login () {
+export function Register () {
   const [user, setUser] = useState({
     email: '',
     password: ''
   })
-  const { login, loginWithGoogle, resetPassword } = useAuth()
+  const { signup } = useAuth()
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
@@ -19,7 +17,7 @@ export function Login () {
     e.preventDefault()
     setError('')
     try {
-      await login(user.email, user.password)
+      await signup(user.email, user.password)
       navigate('/home')
     } catch (error) {
       setError(error.message)
@@ -29,31 +27,11 @@ export function Login () {
   const handleChange = ({ target: { value, name } }) =>
     setUser({ ...user, [name]: value })
 
-  const handleGoogleSignin = async () => {
-    try {
-      await loginWithGoogle()
-      navigate('/home')
-    } catch (error) {
-      setError(error.message)
-    }
-  }
-
-  const handleResetPassword = async (e) => {
-    e.preventDefault()
-    if (!user.email) return setError('Write an email to reset password')
-    try {
-      await resetPassword(user.email)
-      setError('We sent you an email. Check your inbox')
-    } catch (error) {
-      setError(error.message)
-    }
-  }
-
   return (
 
     <Container>
       {error && <p>{error}</p>}
-      <h1 className='login'>Log in to your account</h1>
+      <h1 className='login'>Register with e-mail</h1>
 
       <form onSubmit={handleSubmit}>
         <div className='row'>
@@ -83,28 +61,16 @@ export function Login () {
 
         <div className='actions'>
           <button type='submit'>
-            Sign In
+            Register
           </button>
-          <a
-            href='#!'
-            onClick={handleResetPassword}
-          >
-            Forgot Password?
-          </a>
         </div>
       </form>
-      <button className='btn-google' onClick={handleGoogleSignin}>
-        <Google width={40} height={40} />
-        <div>
-          <div>Log in with Google</div>
-        </div>
-      </button>
-      <Register>
-        Don't have an account?
-        <Link to='/register' className='text-blue-700 hover:text-blue-900'>
-          Register
+      <Login>
+        Already have an Account?
+        <Link to='/login'>
+          Login
         </Link>
-      </Register>
+      </Login>
     </Container>
   )
 }
@@ -183,35 +149,10 @@ const Container = styled.div`
         }
       }
     }
-  }
-  & .btn-google {
-    display: flex;
-    flex-direction: row;
-    height: 40px;
-    padding: 0px 0px 0px 0px;
-    border: 1px solid rgb(66, 133, 244);
-    border-radius: 2px;
-    width: 296px;
-    box-sizing: content-box;
-    cursor: pointer;
-    & > svg {filter: brightness(0.95);}
-    & > div {
-      -webkit-box-flex: 1;
-      flex-grow: 1;
-      height: 40px;
-      background-color: rgb(66, 133, 244);
-      & > div {
-        color: rgb(255, 255, 255);
-        font-size: 14px;
-        font-weight: bold;
-        /* font-family: Akzidenz; */
-        line-height: 40px;
-        height: 40px;
-      }
-    }
-  }
-    `
-const Register = styled.p`
+}
+`
+
+const Login = styled.p`
   display: flex;
   justify-content: space-between;
   padding-left: 3px;

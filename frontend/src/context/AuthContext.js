@@ -57,7 +57,21 @@ export function AuthProvider ({ children }) {
   const [loading, setLoading] = useState(true)
 
   const signup = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password)
+    return createUserWithEmailAndPassword(auth, email, password).then((result) => {
+      console.log(result)
+      // The signed-in user info.
+      const userSignIn = result.user
+      const normalizedUser = userSignIn ? mapUserFromFirebaseAuthToUser(userSignIn, result.user.accessToken) : null
+
+      AuthService.create(normalizedUser, result.user.accessToken)
+        .then((response) => {
+          // localStorage.setItem('user', JSON.stringify(normalizedUser))
+          setUser(normalizedUser)
+        })
+        .catch((e) => {
+          console.log(e)
+        })
+    })
   }
 
   const login = (email, password) => {

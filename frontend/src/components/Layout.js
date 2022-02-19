@@ -47,7 +47,7 @@ export default function Layout () {
         <h1>Personal Finance</h1>
         {user &&
           <div className='user'>
-            <h2>{user.name}</h2><img className='avatar' src={user.avatar} />
+            <h2>{user.name}</h2><img className='avatar' src={user.avatar ? user.avatar : 'avatar.png'} />
           </div>}
         <p>App to keep your numbers up to date</p>
         <Outlet />
@@ -95,6 +95,10 @@ const NavBar = styled.nav`
     & .active {
         color: red;
         font-size: 18px;
+    }
+    &:hover {
+      box-shadow: inset 0 -2px 0 var(--dark);
+      opacity: 0.8;
     }
   }
   & > .login {

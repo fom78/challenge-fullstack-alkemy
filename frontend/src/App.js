@@ -12,6 +12,7 @@ import Form from 'components/Form'
 import Home from 'components/Home'
 import Layout from 'components/Layout'
 import List from 'components/List'
+import { Register } from 'components/Register'
 import { ProtectedRoute } from 'components/ProtectedRoute'
 // Context
 import { AuthProvider } from './context/AuthContext'
@@ -42,6 +43,7 @@ function App () {
               <Route path='/' element={<ProtectedRoute><Home /></ProtectedRoute>} />
               <Route path='/about' element={<About />} />
               <Route path='/login' element={<Login />} />
+              <Route path='/register' element={<Register />} />
               <Route path='home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
               <Route
                 path='list'

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 // Components
 import Operation from './Operation'
-import Form from './Form'
 import Spinner from './Spinner'
 // context
 import { useAuth } from 'context/AuthContext'
@@ -11,10 +10,10 @@ import useOperations from 'hooks/useOperations'
 // Styles
 import styled from 'styled-components'
 
-const List = ({ categories, showFilters = true, title = 'List of operations', actions = true, quantity = 'all', edit = false }) => {
+const List = ({ categories, showFilters = true, title = 'List of operations', actions = true, quantity = 'all' }) => {
   const { user } = useAuth()
-  const { operations, fetchingOperations } = useOperations(user)
-
+  const { operations, fetchingOperations, fetchOperations } = useOperations(user)
+  // const [refreshList, setRefreshList] = useState(true)
   const [operationsToShow, setOperationsToShow] = useState([...operations])
   const [filter, setFilter] = useState({
     typeFilter: 'all',
@@ -45,6 +44,9 @@ const List = ({ categories, showFilters = true, title = 'List of operations', ac
   }
 
   useEffect(() => {
+    fetchOperations()
+  }, [])
+  useEffect(() => {
     if (quantity !== 'all') {
       const lastOperations = operations.sort((a, b) => b.id - a.id).slice(0, quantity)
       setOperationsToShow(lastOperations)
@@ -60,12 +62,9 @@ const List = ({ categories, showFilters = true, title = 'List of operations', ac
   if (fetchingOperations) {
     return <><Outlet /><Spinner /></>
   }
-
   return (
     <>
       <Outlet />
-      {edit &&
-        <Form categories={categories} edit />}
       <h2>{title}</h2>
       {showFilters &&
         <Filters>
