@@ -14,7 +14,7 @@ import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }) => {
+const Operation = ({ operation, actions, bgTransparent = false }) => {
   const { user } = useAuth()
   const [stateModal, setStateModal] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -42,7 +42,6 @@ const Operation = ({ operation, actions, setRefreshList, bgTransparent = false }
           progress: undefined
         })
         setIsDeleting(false)
-        setRefreshList(true)
       })
       .catch((e) => {
         console.log(e)

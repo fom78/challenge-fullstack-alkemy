@@ -15,6 +15,7 @@ import styled from 'styled-components'
 const Form = ({ categories, edit = false }) => {
   const { user } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
+  const [fetchingOperation, setFetchingOperation] = useState(true)
   // Create state as an object
   const [operation, setOperation] = useState({
     concept: '',
@@ -30,26 +31,31 @@ const Form = ({ categories, edit = false }) => {
   // Go to top when click for edit an operation
   useEffect(() => {
     if (edit) window.scrollTo({ top: 0, behavior: 'smooth' })
+    return () => { }
   }, [params])
 
   // Refresh form when params in url change
   useEffect(() => {
-    if (edit && params) {
-      setIsLoading(true)
-      OperationsService.get(params.id, user.token)
-        .then((response) => {
+    const fetchOperation = async () => {
+      try {
+        if (fetchingOperation) {
+          const response = await OperationsService.get(params.id, user.token)
           const operationFounded = response.data
           // Convert to date correct for input.
           const date = new Date(operationFounded.date).toISOString().slice(0, 10)
-
           setOperation({ ...operationFounded, date: date, categoryId: operationFounded.category.id })
-          setIsLoading(false)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+        }
+        setFetchingOperation(false)
+      } catch (error) {
+        console.log(error)
+      }
     }
-    return () => {}
+    if (edit && params) {
+      setIsLoading(true)
+      fetchOperation()
+      setIsLoading(false)
+    }
+    return () => { setFetchingOperation(false) }
   }, [params])
 
   // Verify error

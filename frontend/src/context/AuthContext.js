@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { createContext, useContext, useEffect, useState } from 'react'
 // firebase
 import { initializeApp } from 'firebase/app'
@@ -33,7 +34,7 @@ export const auth = getAuth(app)
 
 const authContext = createContext()
 
-export const mapUserFromFirebaseAuthToUser = (user, token) => {
+const mapUserFromFirebaseAuthToUser = (user, token) => {
   const { email, photoURL, uid, displayName } = user
   const name = (displayName) || ''
   return {
@@ -74,8 +75,7 @@ export function AuthProvider ({ children }) {
       AuthService.create(normalizedUser, result.user.accessToken)
         .then((response) => {
           // localStorage.setItem('user', JSON.stringify(normalizedUser))
-          console.log('Se agrega user o edita token', response.data)
-          // setUser(normalizedUser)
+          setUser(normalizedUser)
         })
         .catch((e) => {
           console.log(e)
@@ -89,7 +89,6 @@ export function AuthProvider ({ children }) {
 
   useEffect(() => {
     const unsubuscribe = onAuthStateChanged(auth, (currentUser) => {
-      console.log({ currentUser })
       // The signed-in user info.
       const normalizedUser = currentUser ? mapUserFromFirebaseAuthToUser(currentUser, currentUser.accessToken) : null
       setUser(normalizedUser)

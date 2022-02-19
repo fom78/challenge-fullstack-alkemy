@@ -3,13 +3,17 @@ import { Outlet } from 'react-router-dom'
 // Components
 import Operation from './Operation'
 import Form from './Form'
+import Spinner from './Spinner'
+// context
+import { useAuth } from 'context/AuthContext'
 // hooks
 import useOperations from 'hooks/useOperations'
 // Styles
 import styled from 'styled-components'
 
 const List = ({ categories, showFilters = true, title = 'List of operations', actions = true, quantity = 'all', edit = false }) => {
-  const { setRefreshList, operations } = useOperations()
+  const { user } = useAuth()
+  const { operations, fetchingOperations } = useOperations(user)
 
   const [operationsToShow, setOperationsToShow] = useState([...operations])
   const [filter, setFilter] = useState({
@@ -43,19 +47,19 @@ const List = ({ categories, showFilters = true, title = 'List of operations', ac
   useEffect(() => {
     if (quantity !== 'all') {
       const lastOperations = operations.sort((a, b) => b.id - a.id).slice(0, quantity)
-      console.log('aaaaa', lastOperations)
-      setOperationsToShow([...lastOperations])
+      setOperationsToShow(lastOperations)
+    } else {
+      setOperationsToShow(operations)
     }
-    // return () => { }
-  }, [])
-
-  useEffect(() => {
-    setOperationsToShow([...operations])
   }, [operations])
 
   useEffect(() => {
     showOperationsFilter(filter)
   }, [filter])
+
+  if (fetchingOperations) {
+    return <><Outlet /><Spinner /></>
+  }
 
   return (
     <>
@@ -95,7 +99,6 @@ const List = ({ categories, showFilters = true, title = 'List of operations', ac
               key={operation.id}
               operation={operation}
               actions={actions}
-              setRefreshList={() => setRefreshList()}
             />
           )
         })}

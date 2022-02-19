@@ -11,7 +11,7 @@ import useOperations from 'hooks/useOperations'
 
 export default function Home () {
   const { login, user } = useAuth()
-  const { operations, isLoading } = useOperations()
+  const { operations, isLoading } = useOperations(user)
 
   const balance = useMemo(() => operations.reduce((previousValue, currentValue) => {
     if (currentValue.type === 'expenditure') return previousValue - currentValue.amount

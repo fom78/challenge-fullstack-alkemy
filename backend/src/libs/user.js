@@ -12,3 +12,16 @@ export const getUserByToken = async (token) => {
     console.log(error)
   }
 }
+
+export const getUserByUid = async (uid) => {
+  try {
+    const user = await User.findOne(
+      {
+        where: { uid }
+      }
+    )
+    return user
+  } catch (error) {
+    console.log(error)
+  }
+}
