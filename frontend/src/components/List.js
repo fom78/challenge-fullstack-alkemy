@@ -10,11 +10,16 @@ import useOperations from 'hooks/useOperations'
 // Styles
 import styled from 'styled-components'
 
-const List = ({ categories, showFilters = true, title = 'List of operations', actions = true, quantity = 'all' }) => {
+const List = ({
+  categories,
+  showFilters = true,
+  title = 'List of operations',
+  actions = true,
+  quantity = 'all'
+}) => {
   const { user } = useAuth()
-  const { operations, fetchingOperations, fetchOperations } = useOperations(user)
-  // const [refreshList, setRefreshList] = useState(true)
-  const [operationsToShow, setOperationsToShow] = useState([...operations])
+  const { operations, fetchingOperations, fetchOperations, setFetchingOperations } = useOperations(user)
+  const [operationsToShow, setOperationsToShow] = useState(operations)
   const [filter, setFilter] = useState({
     typeFilter: 'all',
     categoryFilter: 'all'
@@ -45,7 +50,9 @@ const List = ({ categories, showFilters = true, title = 'List of operations', ac
 
   useEffect(() => {
     fetchOperations()
+    return () => { setFetchingOperations(false) }
   }, [])
+
   useEffect(() => {
     if (quantity !== 'all') {
       const lastOperations = operations.sort((a, b) => b.id - a.id).slice(0, quantity)
@@ -53,10 +60,12 @@ const List = ({ categories, showFilters = true, title = 'List of operations', ac
     } else {
       setOperationsToShow(operations)
     }
+    return () => { setFetchingOperations(false) }
   }, [operations])
 
   useEffect(() => {
     showOperationsFilter(filter)
+    return () => { setFetchingOperations(false) }
   }, [filter])
 
   if (fetchingOperations) {
@@ -101,6 +110,10 @@ const List = ({ categories, showFilters = true, title = 'List of operations', ac
             />
           )
         })}
+        {operations.length === 0
+          ? <MsgNoOperations>No hay operaciones cargadas</MsgNoOperations>
+          : operationsToShow.length === 0 && <MsgNoOperations>No tiene operaciones con el filtro actual</MsgNoOperations>}
+
       </ListStyled>
     </>
   )
@@ -134,4 +147,12 @@ const Filters = styled.div`
       box-sizing: border-box;
     }
   }
+`
+
+const MsgNoOperations = styled.p`
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--red);
+  padding: .5rem;
+  border: 1px solid;
 `

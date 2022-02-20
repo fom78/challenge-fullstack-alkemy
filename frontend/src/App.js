@@ -13,6 +13,7 @@ import Home from 'components/Home'
 import Layout from 'components/Layout'
 import List from 'components/List'
 import { Register } from 'components/Register'
+import { ResetPassword } from 'components/ResetPassword'
 import { ProtectedRoute } from 'components/ProtectedRoute'
 // Context
 import { AuthProvider } from './context/AuthContext'
@@ -44,6 +45,7 @@ function App () {
               <Route path='/about' element={<About />} />
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
+              <Route path='/reset-password' element={<ResetPassword />} />
               <Route path='home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
               <Route
                 path='list'

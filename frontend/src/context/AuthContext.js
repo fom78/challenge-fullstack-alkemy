@@ -65,7 +65,6 @@ export function AuthProvider ({ children }) {
 
       AuthService.create(normalizedUser, result.user.accessToken)
         .then((response) => {
-          // localStorage.setItem('user', JSON.stringify(normalizedUser))
           setUser(normalizedUser)
         })
         .catch((e) => {
@@ -76,19 +75,30 @@ export function AuthProvider ({ children }) {
 
   const login = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password)
+      .then((result) => {
+        // The signed-in user info.
+        const userLogged = result.user
+        const normalizedUser = userLogged ? mapUserFromFirebaseAuthToUser(userLogged, result.user.accessToken) : null
+
+        AuthService.login(normalizedUser, result.user.accessToken)
+          .then((response) => {
+            setUser(normalizedUser)
+          })
+          .catch((e) => {
+            console.error(e)
+          })
+      })
   }
 
   const loginWithGoogle = () => {
     const googleProvider = new GoogleAuthProvider()
     return signInWithPopup(auth, googleProvider).then(result => {
-      // const token = result.accessToken
       // The signed-in user info.
       const userSignIn = result.user
       const normalizedUser = userSignIn ? mapUserFromFirebaseAuthToUser(userSignIn, result.user.accessToken) : null
 
       AuthService.create(normalizedUser, result.user.accessToken)
         .then((response) => {
-          // localStorage.setItem('user', JSON.stringify(normalizedUser))
           setUser(normalizedUser)
         })
         .catch((e) => {
