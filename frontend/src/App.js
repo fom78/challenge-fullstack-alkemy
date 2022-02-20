@@ -6,14 +6,14 @@ import {
 } from 'react-router-dom'
 // components
 import About from 'components/About'
-import { Login } from 'components/Login'
+import { Login } from 'components/login/Login'
 import Error from 'components/Error'
 import Form from 'components/Form'
 import Home from 'components/Home'
 import Layout from 'components/Layout'
 import List from 'components/List'
-import { Register } from 'components/Register'
-import { ResetPassword } from 'components/ResetPassword'
+import { Register } from 'components/login/Register'
+import { ResetPassword } from 'components/login/ResetPassword'
 import { ProtectedRoute } from 'components/ProtectedRoute'
 // Context
 import { AuthProvider } from './context/AuthContext'
