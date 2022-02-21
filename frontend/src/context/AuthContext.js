@@ -99,6 +99,7 @@ export function AuthProvider ({ children }) {
 
       AuthService.create(normalizedUser, result.user.accessToken)
         .then((response) => {
+          console.log('res', response)
           setUser(normalizedUser)
         })
         .catch((e) => {
@@ -117,6 +118,7 @@ export function AuthProvider ({ children }) {
       const normalizedUser = currentUser ? mapUserFromFirebaseAuthToUser(currentUser, currentUser.accessToken) : null
       setUser(normalizedUser)
       setLoading(false)
+      console.log('user: ', normalizedUser)
     })
     return () => unsubuscribe()
   }, [])

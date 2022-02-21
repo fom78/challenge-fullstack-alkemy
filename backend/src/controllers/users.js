@@ -12,24 +12,24 @@ export const saveUser = async (req, res, next) => {
     )
     if (userFound === null) {
       // User not exist, create new
-      await User.create(
-        {
-          uid,
-          actual_access_token: token
-        }
-      )
-      return res.status(201).send({ message: 'user added succefully' })
+      const userNew = {
+        uid,
+        rol: 'user',
+        actual_access_token: token
+      }
+      await User.create(userNew)
+      return res.status(201).send({ message: 'user added succefully', user: userNew })
     } else {
       // User exist, update access token
-      await User.update(
+      const userEdited = await User.update(
         {
           actual_access_token: token
         },
         {
-          where:
-                  { uid }
+          where: { uid }
         })
-      return res.status(203).send({ message: 'User edit token succefully' })
+      console.log('##############', userEdited)
+      return res.status(203).send({ message: 'User edit token succefully', user: userFound })
     }
   } catch (error) {
     console.log(error)
