@@ -6,7 +6,8 @@ const User = db.define('users', {
   uid: { type: Sequelize.TEXT, allowNull: false, unique: true },
   actual_access_token: {
     type: Sequelize.STRING
-  }
+  },
+  rol: { type: Sequelize.ENUM('admin', 'mod', 'user', 'banned'), defaultValue: 'user', allowNull: false }
 })
 
 export default User

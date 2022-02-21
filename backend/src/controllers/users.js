@@ -61,6 +61,7 @@ export const loginUser = async (req, res, next) => {
           where:
                   { uid }
         })
+      console.log('##############', userFound)
       return res.status(203).send({ message: 'User edit token succefully' })
     }
   } catch (error) {
