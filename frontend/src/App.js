@@ -46,7 +46,7 @@ function App () {
               <Route path='/login' element={<Login />} />
               <Route path='/register' element={<Register />} />
               <Route path='/reset-password' element={<ResetPassword />} />
-              <Route path='home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+              <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
               <Route
                 path='list'
                 element={

@@ -44,10 +44,10 @@ export default function Layout () {
         </div>
       </NavBar>
       <Main>
-        <h1>Personal Finance</h1>
+        <h1>Personal Finance</h1>{console.log(user)}
         {user &&
           <div className='user'>
-            <h2>{user.name}</h2><img className='avatar' src={user.avatar ? user.avatar : 'avatar.png'} />
+            <h2>{user.name !== '' ? user.name : user.userName}</h2><img className='avatar' src={user.avatar ? user.avatar : 'avatar.png'} />
           </div>}
         <p>App to keep your numbers up to date</p>
         <Outlet />

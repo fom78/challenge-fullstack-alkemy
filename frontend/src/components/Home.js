@@ -3,7 +3,6 @@ import styled from 'styled-components'
 // Components
 import Google from './icons/Google'
 import List from './List'
-import Spinner from './Spinner'
 // context
 import { useAuth } from 'context/AuthContext'
 // hooks
@@ -11,14 +10,12 @@ import useOperations from 'hooks/useOperations'
 
 export default function Home () {
   const { login, user } = useAuth()
-  const { operations, isLoading } = useOperations(user)
+  const { operations } = useOperations(user)
 
   const balance = useMemo(() => operations.reduce((previousValue, currentValue) => {
     if (currentValue.type === 'expenditure') return previousValue - currentValue.amount
     return previousValue + currentValue.amount
   }, 0), [operations])
-
-  if (isLoading) return (<Spinner />)
 
   return (
     <HomeStyled>

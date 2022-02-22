@@ -56,56 +56,13 @@ export function AuthProvider ({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const signup = (email, password) => {
-    return createUserWithEmailAndPassword(auth, email, password).then((result) => {
-      console.log(result)
-      // The signed-in user info.
-      const userSignIn = result.user
-      const normalizedUser = userSignIn ? mapUserFromFirebaseAuthToUser(userSignIn, result.user.accessToken) : null
+  const signup = (email, password) => createUserWithEmailAndPassword(auth, email, password)
 
-      AuthService.create(normalizedUser, result.user.accessToken)
-        .then((response) => {
-          setUser(normalizedUser)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-    })
-  }
-
-  const login = (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password)
-      .then((result) => {
-        // The signed-in user info.
-        const userLogged = result.user
-        const normalizedUser = userLogged ? mapUserFromFirebaseAuthToUser(userLogged, result.user.accessToken) : null
-
-        AuthService.login(normalizedUser, result.user.accessToken)
-          .then((response) => {
-            setUser(normalizedUser)
-          })
-          .catch((e) => {
-            console.error(e)
-          })
-      })
-  }
+  const login = (email, password) => signInWithEmailAndPassword(auth, email, password)
 
   const loginWithGoogle = () => {
     const googleProvider = new GoogleAuthProvider()
-    return signInWithPopup(auth, googleProvider).then(result => {
-      // The signed-in user info.
-      const userSignIn = result.user
-      const normalizedUser = userSignIn ? mapUserFromFirebaseAuthToUser(userSignIn, result.user.accessToken) : null
-
-      AuthService.create(normalizedUser, result.user.accessToken)
-        .then((response) => {
-          console.log('res', response)
-          setUser(normalizedUser)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
-    })
+    return signInWithPopup(auth, googleProvider)
   }
 
   const logout = () => signOut(auth)
@@ -113,15 +70,25 @@ export function AuthProvider ({ children }) {
   const resetPassword = async (email) => sendPasswordResetEmail(auth, email)
 
   useEffect(() => {
-    const unsubuscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubuscribe = onAuthStateChanged(auth, async (currentUser) => {
       // The signed-in user info.
-      const normalizedUser = currentUser ? mapUserFromFirebaseAuthToUser(currentUser, currentUser.accessToken) : null
-      setUser(normalizedUser)
+      let normalizedUser = currentUser ? mapUserFromFirebaseAuthToUser(currentUser, currentUser.accessToken) : null
+      // Add rol and fields specific for user from DB
+      if (normalizedUser) {
+        AuthService.create(normalizedUser, currentUser.accessToken)
+          .then((response) => {
+            normalizedUser = { ...normalizedUser, rol: response.data.user.rol }
+            // console.table(normalizedUser)
+            setUser(normalizedUser)
+          })
+          .catch((e) => {
+            console.log(e)
+          })
+      }
       setLoading(false)
-      console.log('user: ', normalizedUser)
     })
     return () => unsubuscribe()
-  }, [])
+  }, [user])
 
   return (
     <authContext.Provider
