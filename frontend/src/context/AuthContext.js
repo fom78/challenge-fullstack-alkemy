@@ -70,25 +70,26 @@ export function AuthProvider ({ children }) {
   const resetPassword = async (email) => sendPasswordResetEmail(auth, email)
 
   useEffect(() => {
-    const unsubuscribe = onAuthStateChanged(auth, async (currentUser) => {
+    const unsubuscribe = onAuthStateChanged(auth, (currentUser) => {
       // The signed-in user info.
       let normalizedUser = currentUser ? mapUserFromFirebaseAuthToUser(currentUser, currentUser.accessToken) : null
       // Add rol and fields specific for user from DB
       if (normalizedUser) {
         AuthService.create(normalizedUser, currentUser.accessToken)
           .then((response) => {
-            normalizedUser = { ...normalizedUser, rol: response.data.user.rol }
-            // console.table(normalizedUser)
+            normalizedUser = { ...normalizedUser, rol: response.data.user.dataValues.rol }
             setUser(normalizedUser)
           })
           .catch((e) => {
             console.log(e)
           })
+      } else {
+        setUser(null)
       }
       setLoading(false)
     })
     return () => unsubuscribe()
-  }, [user])
+  }, [])
 
   return (
     <authContext.Provider

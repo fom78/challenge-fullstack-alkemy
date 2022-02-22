@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 // components
 import Google from '../icons/Google'
@@ -11,11 +11,11 @@ import { authErrors } from 'libs/errors'
 import { Button, Register, Container } from './styles'
 
 export function Login () {
-  const [user, setUser] = useState({
+  const [usertologin, setUserToLogin] = useState({
     email: '',
     password: ''
   })
-  const { login, loginWithGoogle } = useAuth()
+  const { login, loginWithGoogle, user } = useAuth()
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
@@ -23,21 +23,27 @@ export function Login () {
     e.preventDefault()
     setError('')
     try {
-      await login(user.email, user.password)
-      navigate('/home')
+      await login(usertologin.email, usertologin.password)
+      // navigate('/home')
     } catch (error) {
       const msg = authErrors(error.code)
       setError(msg)
     }
   }
 
+  useEffect(() => {
+    if (user) {
+      navigate('/home')
+    }
+  }, [user])
+
   const handleChange = ({ target: { value, name } }) =>
-    setUser({ ...user, [name]: value })
+    setUserToLogin({ ...usertologin, [name]: value })
 
   const handleGoogleSignin = async () => {
     try {
       await loginWithGoogle()
-      navigate('/home')
+      // navigate('/home')
     } catch (error) {
       setError(error.message)
     }

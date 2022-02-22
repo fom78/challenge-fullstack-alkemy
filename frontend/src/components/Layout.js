@@ -44,7 +44,7 @@ export default function Layout () {
         </div>
       </NavBar>
       <Main>
-        <h1>Personal Finance</h1>{console.log(user)}
+        <h1>Personal Finance</h1>
         {user &&
           <div className='user'>
             <h2>{user.name !== '' ? user.name : user.userName}</h2><img className='avatar' src={user.avatar ? user.avatar : 'avatar.png'} />
