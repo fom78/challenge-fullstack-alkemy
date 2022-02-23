@@ -41,7 +41,7 @@ export default function Layout () {
           <Link to='/about'>About</Link>
         </div>
         <div className='login'>
-          {user ? <>{user.rol === 'admin' ? <Link className='rol-admin' onClick={logout} to='/home'><Conf /></Link> : ''}<Link onClick={logout} to='/home'>Logout</Link></> : <Link to='/login'>Login</Link>}
+          {user ? <>{user.rol === 'admin' ? <Link className='rol-admin' to='/admin'><Conf /></Link> : ''}<Link onClick={logout} to='/home'>Logout</Link></> : <Link to='/login'>Login</Link>}
         </div>
       </NavBar>
       <Main>

@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom'
 // components
 import About from 'components/About'
+import Admin from 'components/Admin'
 import { Login } from 'components/login/Login'
 import Error from 'components/Error'
 import Form from 'components/Form'
@@ -30,6 +31,7 @@ function App () {
               <Route path='/register' element={<Register />} />
               <Route path='/reset-password' element={<ResetPassword />} />
               <Route path='/home' element={<ProtectedRoute><Home /></ProtectedRoute>} />
+              <Route path='/admin' element={<ProtectedRoute><Admin /></ProtectedRoute>} />
               <Route
                 path='list'
                 element={
