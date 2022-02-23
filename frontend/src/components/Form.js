@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Spinner from './Spinner'
 // context
 import { useAuth } from 'context/AuthContext'
+// hooks
+import useOperations from 'hooks/useOperations'
 // Notify
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -12,8 +14,9 @@ import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Form = ({ categories, edit = false }) => {
+const Form = ({ edit = false }) => {
   const { user } = useAuth()
+  const { categories } = useOperations(user)
   const [isLoading, setIsLoading] = useState(false)
   const [fetchingOperation, setFetchingOperation] = useState(true)
   // Create state as an object

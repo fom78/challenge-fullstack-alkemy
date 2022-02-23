@@ -11,15 +11,15 @@ import useOperations from 'hooks/useOperations'
 import styled from 'styled-components'
 
 const List = ({
-  categories,
   showFilters = true,
   title = 'List of operations',
   actions = true,
   quantity = 'all'
 }) => {
   const { user } = useAuth()
-  const { operations, fetchingOperations, fetchOperations, setFetchingOperations } = useOperations(user)
+  const { operations, fetchingOperations, fetchOperations, setFetchingOperations, categories } = useOperations(user)
   const [operationsToShow, setOperationsToShow] = useState(operations)
+  const [categoriesFiltered, setCategoriesFiltered] = useState(categories)
   const [filter, setFilter] = useState({
     typeFilter: 'all',
     categoryFilter: 'all'
@@ -68,6 +68,10 @@ const List = ({
     return () => { setFetchingOperations(false) }
   }, [filter])
 
+  useEffect(() => {
+    setCategoriesFiltered([...new Set(operations.map(o => o.category.name))])
+  }, [operations])
+
   if (fetchingOperations) {
     return <><Outlet /><Spinner /></>
   }
@@ -90,12 +94,14 @@ const List = ({
             <select id='category-filter-form' onChange={handleChange} name='categoryFilter'>
               <option value='all'>All</option>
               {categories && categories.map(category =>
-                <option
-                  key={category.id}
-                  value={category.id}
-                >
-                  {category.name}
-                </option>)}
+                categoriesFiltered.includes(category.name) &&
+                  <option
+                    key={category.id}
+                    value={category.id}
+                  >
+                    {category.name}
+                  </option>
+              )}
             </select>
           </div>
         </Filters>}

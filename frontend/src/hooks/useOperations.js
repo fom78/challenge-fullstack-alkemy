@@ -1,11 +1,25 @@
 import { useEffect, useState } from 'react'
 // services
 import OperationsService from 'services/operations.service'
+import CategoriesService from 'services/categories.service'
 
 export default function useOperations (user) {
   const [noError, setNoError] = useState(true)
   const [fetchingOperations, setFetchingOperations] = useState(true)
   const [operations, setOperations] = useState([])
+  const [categories, setCategories] = useState([])
+
+  // Get categories
+  const fetchCategories = () => {
+    CategoriesService.getAll()
+      .then((response) => {
+        const categoriesFounded = response.data
+        setCategories(categoriesFounded)
+      })
+      .catch((e) => {
+        console.log(e)
+      })
+  }
 
   const fetchOperations = async () => {
     try {
@@ -21,6 +35,10 @@ export default function useOperations (user) {
     }
   }
 
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+
   // Get all Operations when refresh list
   useEffect(() => {
     if (user) {
@@ -29,5 +47,5 @@ export default function useOperations (user) {
     return () => { setFetchingOperations(false) }
   }, [user])
 
-  return { operations, noError, fetchingOperations, setFetchingOperations, fetchOperations }
+  return { categories, operations, noError, fetchingOperations, setFetchingOperations, fetchOperations }
 }

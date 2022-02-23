@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import {
   BrowserRouter,
   Routes,
@@ -17,24 +16,8 @@ import { ResetPassword } from 'components/login/ResetPassword'
 import { ProtectedRoute } from 'components/ProtectedRoute'
 // Context
 import { AuthProvider } from './context/AuthContext'
-// Service
-import CategoriesService from 'services/categories.service'
 
 function App () {
-  const [categories, setCategories] = useState([])
-
-  // Get all Categories from DB
-  useEffect(() => {
-    CategoriesService.getAll()
-      .then((response) => {
-        const categoriesFounded = response.data
-        setCategories(categoriesFounded)
-      })
-      .catch((e) => {
-        console.log(e)
-      })
-  }, [])
-
   return (
     <>
       <AuthProvider>
@@ -51,14 +34,12 @@ function App () {
                 path='list'
                 element={
                   <ProtectedRoute>
-                    <List
-                      categories={categories}
-                    />
+                    <List />
                   </ProtectedRoute>
                 }
               />
-              <Route path='add' element={<ProtectedRoute><Form categories={categories} /></ProtectedRoute>} />
-              <Route path='edit/:id' element={<ProtectedRoute><Form categories={categories} edit /></ProtectedRoute>} />
+              <Route path='add' element={<ProtectedRoute><Form /></ProtectedRoute>} />
+              <Route path='edit/:id' element={<ProtectedRoute><Form edit /></ProtectedRoute>} />
               <Route path='*' element={<Error />} />
             </Route>
           </Routes>
