@@ -1,6 +1,7 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom'
 // components
 import ScrollToTop from 'components/ScrollToTop'
+import Conf from './icons/Conf'
 // context
 import { useAuth } from 'context/AuthContext'
 // Notify
@@ -40,14 +41,18 @@ export default function Layout () {
           <Link to='/about'>About</Link>
         </div>
         <div className='login'>
-          {user ? <Link onClick={logout} to='/home'>Logout</Link> : <Link to='/login'>Login</Link>}
+          {user ? <>{user.rol === 'admin' ? <Link className='rol-admin' onClick={logout} to='/home'><Conf /></Link> : ''}<Link onClick={logout} to='/home'>Logout</Link></> : <Link to='/login'>Login</Link>}
         </div>
       </NavBar>
       <Main>
         <h1>Personal Finance</h1>
         {user &&
           <div className='user'>
-            <h2>{user.name !== '' ? user.name : user.userName}</h2><img className='avatar' src={user.avatar ? user.avatar : 'avatar.png'} />
+            <div>
+              <h2>{user.name !== '' ? user.name : user.userName}</h2>
+              <span className='rol'>{user.rol}</span>
+            </div>
+            <img className='avatar' src={user.avatar ? user.avatar : 'avatar.png'} />
           </div>}
         <p>App to keep your numbers up to date</p>
         <Outlet />
@@ -62,13 +67,24 @@ export const Container = styled.div`
   padding: .8rem;
 `
 export const Main = styled.main`
-  text-align:center;
+  /* text-align:center; */
   & .user {
     display: flex;
     justify-content: center;
     align-content: center;
-    & > h2 {padding-right: 10px;}
-    
+    & > div > h2 {
+      padding-bottom: 0;
+      padding-right: 5px;
+      margin-bottom: 0;
+    }
+    & > div > span.rol {
+      padding-top: 0;
+      padding-left: 4px;
+      padding-right: 4px;
+      margin-top: 0;
+      text-align: left;
+      background-color: var(--green);
+    }    
   }
   & .avatar {
     width: 40px;
@@ -106,6 +122,16 @@ const NavBar = styled.nav`
     & > a {
       color: var(--text-primary);
       cursor: pointer;
+    }
+    & > a.rol-admin {
+      padding-top: 0;
+      padding-left: 4px;
+      padding-right: 4px;
+      margin-top: 0;
+      text-align: left;
+      & > svg {
+        vertical-align: middle;
+      }
     }
   }
 `
