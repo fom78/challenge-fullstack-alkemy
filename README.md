@@ -8,7 +8,7 @@
 - [Sobre el frontend](#frontend)
 - [Sobre el backend](#backend)
 - [Screens del sitio](#screens)
-
+- Usuario admin para test de alkemy: admin@alkemy.com.ar (pass: 123456)
 <a name="consigna"></a>
 [Volver al Indice](#top)
 
