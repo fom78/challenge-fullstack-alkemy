@@ -24,19 +24,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 // Config
 // Routes
 var apiUrl = '/api/v1/';
-var app = (0, _express["default"])(); // app.use(cors(
-//   {
-//     origin: [
-//       'http://localhost:3000',
-//       'http://localhost:4000',
-//       'https://challenge-fullstack-alkemy.vercel.app',
-//       'https://challenge-fullstack-alkemy.vercel.app/'
-//     ],
-//     methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH'],
-//     allowedHeaders: ['Content-Type', 'Authorization', 'x-access-token']
-//   }
-// ))
-
+var app = (0, _express["default"])();
 app.use((0, _cors["default"])());
 app.use((0, _morgan["default"])('dev'));
 app.use(_express["default"].json()); // Connect to DB

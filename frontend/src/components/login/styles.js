@@ -13,13 +13,14 @@ export const Container = styled.div`
         display: flex;
         flex-direction: column;
         @media (min-width: 576px) {
-            flex-direction: row;
+            flex-direction: column;
             gap:10px;
         }
         width: 100%;
             box-sizing: border-box;
             & > label {
                 display: block;
+                width: 100%;
                 margin-bottom: 0.5rem;
                 font-weight: 600;
                 text-align: left;

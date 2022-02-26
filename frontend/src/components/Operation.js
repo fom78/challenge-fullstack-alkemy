@@ -18,6 +18,7 @@ const Operation = ({ operation, actions, bgTransparent = false }) => {
   const { user } = useAuth()
   const [stateModal, setStateModal] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [deleted, setDeleted] = useState(false)
   const navigate = useNavigate()
   // Convert date to short date, format: d/mm/yy
   const date = new Date(operation.date)
@@ -27,7 +28,10 @@ const Operation = ({ operation, actions, bgTransparent = false }) => {
   const handleEdit = (id) => {
     navigate(`/edit/${id}`)
   }
-
+  const handleDelete2 = (id) => {
+    setStateModal(true)
+    navigate(`/delete/${id}`)
+  }
   const handleDelete = (id, token) => {
     setIsDeleting(true)
     OperationsService.delete(id, token)
@@ -42,16 +46,20 @@ const Operation = ({ operation, actions, bgTransparent = false }) => {
           progress: undefined
         })
         setIsDeleting(false)
+        setDeleted(true)
       })
       .catch((e) => {
         console.log(e)
       })
+    navigate('/list')
   }
 
   if (isDeleting) {
     return <Spinner />
   }
-
+  if (deleted) {
+    return null
+  }
   return (
     <OperationStyled key={operation.id} bgTransparent={bgTransparent}>
       <div className='operationHeader'>
@@ -61,7 +69,8 @@ const Operation = ({ operation, actions, bgTransparent = false }) => {
           ? (
             <div className='btn-action'>
               <button onClick={() => handleEdit(operation.id)}><Edit /></button>
-              <button><Delete onClick={() => setStateModal(!stateModal)} /></button>
+              {/* <button><Delete onClick={() => setStateModal(!stateModal)} /></button> */}
+              <button><Delete onClick={() => handleDelete2(operation.id)} /></button>
             </div>)
           : null}
       </div>
@@ -75,7 +84,6 @@ const Operation = ({ operation, actions, bgTransparent = false }) => {
         state={stateModal}
         changeState={setStateModal}
         handleDelete={() => handleDelete(operation.id, user.token)}
-        handleEdit={() => handleEdit(operation.id)}
         operation={operation}
         showOverlay
       />

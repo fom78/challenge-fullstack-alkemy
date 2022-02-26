@@ -42,6 +42,7 @@ function App () {
               />
               <Route path='add' element={<ProtectedRoute><Form /></ProtectedRoute>} />
               <Route path='edit/:id' element={<ProtectedRoute><Form edit /></ProtectedRoute>} />
+              <Route path='delete/:id' element={<ProtectedRoute><List /></ProtectedRoute>} />
               <Route path='*' element={<Error />} />
             </Route>
           </Routes>
