@@ -26,7 +26,7 @@ export default function Home () {
             <List
               title='Last operations added'
               showFilters={false}
-              quantity={2}
+              quantity={10}
             />
           </>)
         : (
