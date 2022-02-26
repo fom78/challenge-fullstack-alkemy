@@ -1,10 +1,19 @@
+import styled from 'styled-components'
 
 const Error = ({ message = 'There\'s nothing here!' }) => {
   return (
-    <main style={{ padding: '1rem' }}>
+    <Container>
       <p>{message}</p>
-    </main>
+    </Container>
   )
 }
 
 export default Error
+
+const Container = styled.main`
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--red);
+  padding: .5rem;
+  border: 1px solid;
+`

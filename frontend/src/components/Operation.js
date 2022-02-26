@@ -5,6 +5,8 @@ import ConfirmDeleteModal from './ConfirmDeleteModal'
 import Edit from './icons/Edit'
 import Delete from './icons/Delete'
 import Spinner from './Spinner'
+// context
+import { useAuth } from 'context/AuthContext'
 // Notify
 import { toast } from 'react-toastify'
 // Services
@@ -12,9 +14,11 @@ import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Operation = ({ operation, user, actions, setRefreshList, bgTransparent = false }) => {
+const Operation = ({ operation, actions, bgTransparent = false }) => {
+  const { user } = useAuth()
   const [stateModal, setStateModal] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
+  const [deleted, setDeleted] = useState(false)
   const navigate = useNavigate()
   // Convert date to short date, format: d/mm/yy
   const date = new Date(operation.date)
@@ -22,9 +26,12 @@ const Operation = ({ operation, user, actions, setRefreshList, bgTransparent = f
   const color = (operation.type === 'income') ? 'green' : 'red'
 
   const handleEdit = (id) => {
-    navigate(`/list/edit/${id}`)
+    navigate(`/edit/${id}`)
   }
-
+  const handleDelete2 = (id) => {
+    setStateModal(true)
+    navigate(`/delete/${id}`)
+  }
   const handleDelete = (id, token) => {
     setIsDeleting(true)
     OperationsService.delete(id, token)
@@ -39,17 +46,20 @@ const Operation = ({ operation, user, actions, setRefreshList, bgTransparent = f
           progress: undefined
         })
         setIsDeleting(false)
-        setRefreshList(true)
+        setDeleted(true)
       })
       .catch((e) => {
         console.log(e)
       })
+    navigate('/list')
   }
 
   if (isDeleting) {
     return <Spinner />
   }
-
+  if (deleted) {
+    return null
+  }
   return (
     <OperationStyled key={operation.id} bgTransparent={bgTransparent}>
       <div className='operationHeader'>
@@ -59,7 +69,8 @@ const Operation = ({ operation, user, actions, setRefreshList, bgTransparent = f
           ? (
             <div className='btn-action'>
               <button onClick={() => handleEdit(operation.id)}><Edit /></button>
-              <button><Delete onClick={() => setStateModal(!stateModal)} /></button>
+              {/* <button><Delete onClick={() => setStateModal(!stateModal)} /></button> */}
+              <button><Delete onClick={() => handleDelete2(operation.id)} /></button>
             </div>)
           : null}
       </div>
@@ -73,7 +84,6 @@ const Operation = ({ operation, user, actions, setRefreshList, bgTransparent = f
         state={stateModal}
         changeState={setStateModal}
         handleDelete={() => handleDelete(operation.id, user.token)}
-        handleEdit={() => handleEdit(operation.id)}
         operation={operation}
         showOverlay
       />

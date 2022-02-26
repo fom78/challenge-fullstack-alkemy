@@ -2,11 +2,24 @@ import { useState, useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
 // Components
 import Operation from './Operation'
+import Spinner from './Spinner'
+// context
+import { useAuth } from 'context/AuthContext'
+// hooks
+import useOperations from 'hooks/useOperations'
 // Styles
 import styled from 'styled-components'
 
-const List = ({ categories, user, operations, setRefreshList, showFilters = true, title = 'List of operations', actions = true }) => {
-  const [operationsToShow, setOperationsToShow] = useState([...operations])
+const List = ({
+  showFilters = true,
+  title = 'List of operations',
+  actions = true,
+  quantity = 'all'
+}) => {
+  const { user } = useAuth()
+  const { operations, fetchingOperations, fetchOperations, setFetchingOperations, categories } = useOperations(user)
+  const [operationsToShow, setOperationsToShow] = useState(operations)
+  const [categoriesFiltered, setCategoriesFiltered] = useState(categories)
   const [filter, setFilter] = useState({
     typeFilter: 'all',
     categoryFilter: 'all'
@@ -36,13 +49,32 @@ const List = ({ categories, user, operations, setRefreshList, showFilters = true
   }
 
   useEffect(() => {
-    setOperationsToShow([...operations])
+    fetchOperations()
+    return () => { setFetchingOperations(false) }
+  }, [])
+
+  useEffect(() => {
+    if (quantity !== 'all') {
+      const lastOperations = operations.sort((a, b) => b.id - a.id).slice(0, quantity)
+      setOperationsToShow(lastOperations)
+    } else {
+      setOperationsToShow(operations)
+    }
+    return () => { setFetchingOperations(false) }
   }, [operations])
 
   useEffect(() => {
     showOperationsFilter(filter)
+    return () => { setFetchingOperations(false) }
   }, [filter])
 
+  useEffect(() => {
+    setCategoriesFiltered([...new Set(operations.map(o => o.category.name))])
+  }, [operations])
+
+  if (fetchingOperations) {
+    return <><Outlet /><Spinner /></>
+  }
   return (
     <>
       <Outlet />
@@ -62,12 +94,14 @@ const List = ({ categories, user, operations, setRefreshList, showFilters = true
             <select id='category-filter-form' onChange={handleChange} name='categoryFilter'>
               <option value='all'>All</option>
               {categories && categories.map(category =>
-                <option
-                  key={category.id}
-                  value={category.id}
-                >
-                  {category.name}
-                </option>)}
+                categoriesFiltered.includes(category.name) &&
+                  <option
+                    key={category.id}
+                    value={category.id}
+                  >
+                    {category.name}
+                  </option>
+              )}
             </select>
           </div>
         </Filters>}
@@ -79,11 +113,13 @@ const List = ({ categories, user, operations, setRefreshList, showFilters = true
               key={operation.id}
               operation={operation}
               actions={actions}
-              user={user}
-              setRefreshList={() => setRefreshList()}
             />
           )
         })}
+        {operations.length === 0
+          ? <MsgNoOperations>No hay operaciones cargadas</MsgNoOperations>
+          : operationsToShow.length === 0 && <MsgNoOperations>No tiene operaciones con el filtro actual</MsgNoOperations>}
+
       </ListStyled>
     </>
   )
@@ -117,4 +153,12 @@ const Filters = styled.div`
       box-sizing: border-box;
     }
   }
+`
+
+const MsgNoOperations = styled.p`
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--red);
+  padding: .5rem;
+  border: 1px solid;
 `

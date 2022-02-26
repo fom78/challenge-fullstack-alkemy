@@ -8,6 +8,8 @@
   --bg-primary: #375A7F;
   --text-primary: #fff;
   --text-secondary: #0f0f0f;
+  --text-gray: #8492a6;
+  --blue: #0066FF;
   --green: #119611;
   --red: #e23131;
 }
@@ -37,11 +39,6 @@ a {
   color: var(--dark);
   text-decoration: none;
   transition: all 0.3s ease-out;
-}
-
-a:hover {
-  box-shadow: inset 0 -2px 0 var(--dark);
-  opacity: 0.8;
 }
 
 figure {

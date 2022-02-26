@@ -19,7 +19,7 @@ export const saveOperation = async (req, res, next) => {
         category_id: categoryId
       }
     )
-    return res.status(201).send(operationAdded)
+    res.status(201).send(operationAdded)
   } catch (error) {
     console.log(error)
     next()
@@ -40,13 +40,14 @@ export const getOperations = async (req, res, next) => {
           },
           {
             model: User,
-            attributes: ['uid', 'id']
+            attributes: ['uid', 'id', 'rol']
           }
         ],
         order: [['date', 'DESC']]
       }
     )
     // res.json(operations)
+    console.log('operaciones de usuario: ', operations.length)
     return res.status(200).send(operations)
   } catch (error) {
     console.log(error)

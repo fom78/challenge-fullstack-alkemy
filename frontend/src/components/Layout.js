@@ -1,11 +1,22 @@
+import { Outlet, Link, useNavigate } from 'react-router-dom'
+// components
 import ScrollToTop from 'components/ScrollToTop'
-import { Outlet, Link } from 'react-router-dom'
+import Conf from './icons/Conf'
+// context
+import { useAuth } from 'context/AuthContext'
 // Notify
 import { ToastContainer } from 'react-toastify'
 // Styles
 import styled from 'styled-components'
 
-export default function Layout ({ user = null, login, logout }) {
+export default function Layout () {
+  const { logout, user } = useAuth()
+  const navigate = useNavigate()
+
+  const addOperation = () => {
+    navigate('/add')
+  }
+
   return (
     <Container>
       <ToastContainer
@@ -24,20 +35,24 @@ export default function Layout ({ user = null, login, logout }) {
           <Link to='/home'>Home</Link> |{' '}
           {user &&
             <>
-              <Link to='/list'>list</Link> |{' '}
-              <Link to='/list/add'>Add</Link> |{' '}
+              <Link to='/list'>List</Link> |{' '}
+              <Link to='/add' onClick={addOperation}>Add</Link> |{' '}
             </>}
           <Link to='/about'>About</Link>
         </div>
         <div className='login'>
-          {user ? <Link onClick={logout} to='/home'>Logout</Link> : <Link onClick={login} to='/home'>Login</Link>}
+          {user ? <>{user.rol === 'admin' ? <Link className='rol-admin' to='/admin'><Conf /></Link> : ''}<Link onClick={logout} to='/home'>Logout</Link></> : <Link to='/login'>Login</Link>}
         </div>
       </NavBar>
       <Main>
         <h1>Personal Finance</h1>
         {user &&
           <div className='user'>
-            <h2>{user.name}</h2><img className='avatar' src={user.avatar} />
+            <div>
+              <h2>{user.name !== '' ? user.name : user.userName}</h2>
+              <span className='rol'>{user.rol}</span>
+            </div>
+            <img className='avatar' src={user.avatar ? user.avatar : 'avatar.png'} />
           </div>}
         <p>App to keep your numbers up to date</p>
         <Outlet />
@@ -52,13 +67,24 @@ export const Container = styled.div`
   padding: .8rem;
 `
 export const Main = styled.main`
-  text-align:center;
+  /* text-align:center; */
   & .user {
     display: flex;
     justify-content: center;
     align-content: center;
-    & > h2 {padding-right: 10px;}
-    
+    & > div > h2 {
+      padding-bottom: 0;
+      padding-right: 5px;
+      margin-bottom: 0;
+    }
+    & > div > span.rol {
+      padding-top: 0;
+      padding-left: 4px;
+      padding-right: 4px;
+      margin-top: 0;
+      text-align: left;
+      background-color: var(--green);
+    }    
   }
   & .avatar {
     width: 40px;
@@ -82,12 +108,30 @@ const NavBar = styled.nav`
   & .menues > a {
     color: var(--text-primary);
     font-weight: bold;
+    & .active {
+        color: red;
+        font-size: 18px;
+    }
+    &:hover {
+      box-shadow: inset 0 -2px 0 var(--dark);
+      opacity: 0.8;
+    }
   }
   & > .login {
     padding-right: 1rem;
     & > a {
       color: var(--text-primary);
       cursor: pointer;
+    }
+    & > a.rol-admin {
+      padding-top: 0;
+      padding-left: 4px;
+      padding-right: 4px;
+      margin-top: 0;
+      text-align: left;
+      & > svg {
+        vertical-align: middle;
+      }
     }
   }
 `

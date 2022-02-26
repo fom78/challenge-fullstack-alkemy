@@ -2,6 +2,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 // Components
 import Spinner from './Spinner'
+// context
+import { useAuth } from 'context/AuthContext'
+// hooks
+import useOperations from 'hooks/useOperations'
 // Notify
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -10,8 +14,11 @@ import OperationsService from 'services/operations.service'
 // Styles
 import styled from 'styled-components'
 
-const Form = ({ user, categories, setRefreshList, edit = false }) => {
+const Form = ({ edit = false }) => {
+  const { user } = useAuth()
+  const { categories } = useOperations(user)
   const [isLoading, setIsLoading] = useState(false)
+  const [fetchingOperation, setFetchingOperation] = useState(true)
   // Create state as an object
   const [operation, setOperation] = useState({
     concept: '',
@@ -19,7 +26,7 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
     date: '',
     type: '',
     categoryId: '',
-    userId: user.uid
+    userId: user ? user.uid : ''
   })
   const params = useParams()
   const navigate = useNavigate()
@@ -27,25 +34,31 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
   // Go to top when click for edit an operation
   useEffect(() => {
     if (edit) window.scrollTo({ top: 0, behavior: 'smooth' })
+    return () => { }
   }, [params])
 
   // Refresh form when params in url change
   useEffect(() => {
-    if (edit && params) {
-      setIsLoading(true)
-      OperationsService.get(params.id, user.token)
-        .then((response) => {
+    const fetchOperation = async () => {
+      try {
+        if (fetchingOperation) {
+          const response = await OperationsService.get(params.id, user.token)
           const operationFounded = response.data
           // Convert to date correct for input.
           const date = new Date(operationFounded.date).toISOString().slice(0, 10)
-
           setOperation({ ...operationFounded, date: date, categoryId: operationFounded.category.id })
-          setIsLoading(false)
-        })
-        .catch((e) => {
-          console.log(e)
-        })
+        }
+        setFetchingOperation(false)
+      } catch (error) {
+        console.log(error)
+      }
     }
+    if (edit && params) {
+      setIsLoading(true)
+      fetchOperation()
+      setIsLoading(false)
+    }
+    return () => { setFetchingOperation(false) }
   }, [params])
 
   // Verify error
@@ -69,9 +82,9 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
         return
       }
       setError(false)
+      setIsLoading(true)
       OperationsService.update(params.id, operation, user.token)
         .then((response) => {
-          setRefreshList(true)
           // Notify user
           toast.info('Operation edited', {
             position: 'top-center',
@@ -82,6 +95,7 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
             draggable: true,
             progress: undefined
           })
+          setIsLoading(false)
         })
         .catch((e) => {
           console.log(e)
@@ -100,28 +114,28 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
       navigate('/list')
     }
     if (!edit) {
-      console.log(operation.categoryId)
       if (operation.concept === '' || operation.amount === '' || operation.date === '' || operation.type === '' || operation.categoryId === '') {
         setError(true)
       } else {
         setError(false)
+        setIsLoading(true)
         OperationsService.create(operation, user.token)
           .then((response) => {
-            setRefreshList(true)
+            // Notify user
+            toast.success('Operation added', {
+              position: 'top-center',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined
+            })
+            setIsLoading(false)
           })
           .catch((e) => {
             console.log(e)
           })
-        // Notify user
-        toast.success('Operation added', {
-          position: 'top-center',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined
-        })
         // Redirect
         navigate('/list')
       }
@@ -225,7 +239,7 @@ const Form = ({ user, categories, setRefreshList, edit = false }) => {
             </div>
           </Row>
           <Button type='submit' value={edit ? 'Edit' : 'Add'} green />
-          <Button type='submit' value='Cancel' onClick={cancelButton} red />
+          <Button type='button' value='Cancel' onClick={cancelButton} red />
 
         </form>
       </div>
