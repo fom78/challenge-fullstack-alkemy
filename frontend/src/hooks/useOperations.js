@@ -47,5 +47,5 @@ export default function useOperations (user) {
     return () => { setFetchingOperations(false) }
   }, [user])
 
-  return { categories, operations, noError, fetchingOperations, setFetchingOperations, fetchOperations }
+  return { categories, operations, noError, fetchingOperations, setFetchingOperations, fetchOperations, fetchCategories }
 }
