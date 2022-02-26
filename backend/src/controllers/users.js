@@ -10,6 +10,7 @@ export const saveUser = async (req, res, next) => {
         where: { uid }
       }
     )
+    console.log('Encontrado', userFound)
     if (userFound === null) {
       // User not exist, create new
       const userNew = {
@@ -28,7 +29,7 @@ export const saveUser = async (req, res, next) => {
         {
           where: { uid }
         })
-      return res.status(203).send({ message: 'User edit token succefully, googleLogin', user: { ...userFound, actual_access_token: token } })
+      return res.status(203).send({ message: 'User edit token succefully, googleLogin', user: { ...userFound.dataValues, actual_access_token: token } })
     }
   } catch (error) {
     console.log(error)

@@ -77,7 +77,7 @@ export function AuthProvider ({ children }) {
       if (normalizedUser) {
         AuthService.create(normalizedUser, currentUser.accessToken)
           .then((response) => {
-            normalizedUser = { ...normalizedUser, rol: response.data.user.dataValues.rol }
+            normalizedUser = { ...normalizedUser, rol: response.data.user.rol }
             setUser(normalizedUser)
           })
           .catch((e) => {
