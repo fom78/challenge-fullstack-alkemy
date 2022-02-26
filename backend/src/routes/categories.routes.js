@@ -2,7 +2,7 @@ import { Router } from 'express'
 // Controllers
 import { saveCategory, getCategories, editCategory } from '../controllers/categories'
 // Middlewares
-import { verifyToken } from '../middlewares/auth'
+import { isAdmin, verifyToken } from '../middlewares/auth'
 
 const router = Router()
 
@@ -13,6 +13,6 @@ router.post('/', [verifyToken], saveCategory)
 router.get('/', getCategories)
 
 // Edit a category by id
-router.put('/:id', [verifyToken], editCategory)
+router.put('/:id', [verifyToken, isAdmin], editCategory)
 
 export default router

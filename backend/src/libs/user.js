@@ -25,3 +25,16 @@ export const getUserByUid = async (uid) => {
     console.log(error)
   }
 }
+
+export const getUserById = async (id) => {
+  try {
+    const user = await User.findOne(
+      {
+        where: { id }
+      }
+    )
+    return user
+  } catch (error) {
+    console.log(error)
+  }
+}

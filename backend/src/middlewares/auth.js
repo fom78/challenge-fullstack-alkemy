@@ -1,5 +1,5 @@
 // Libs
-import { getUserByToken } from '../libs/user'
+import { getUserByToken, getUserById } from '../libs/user'
 
 // Simple verify for didactical use.... if token is in db, add the user id in request
 export const verifyToken = async (req, res, next) => {
@@ -16,4 +16,17 @@ export const verifyToken = async (req, res, next) => {
   req.body.actualUserId = user.id
 
   next()
+}
+
+// Verify is Admin
+export const isAdmin = async (req, res, next) => {
+  console.log(req.body.actualUserId)
+  // // verify user exist and token is valid
+  const user = await getUserById(req.body.actualUserId)
+  console.log(user.rol, ' es admin')
+  if (user && user.rol === 'admin') {
+    next()
+  } else {
+    return res.status(406).json({ message: 'The user nor have admin privilegies' })
+  }
 }
